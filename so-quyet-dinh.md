@@ -17,6 +17,9 @@ cũ được gán theo cách cũ.
 | [QĐ-002](#qđ-002) | Reviewer trả nguyên job khi mẫu kiểm có trên 10% ảnh sai | 16/09/2026 | Quy trình QA Đội | Hiệu lực |
 | [QĐ-003](#qđ-003) | Chuẩn hóa Pre-annotation bằng YOLO11m và logic tự động truncated/occluded | 17/09/2026 | [P-003](problem-backlog.md#p-003), [P-004](problem-backlog.md#p-004) | Hiệu lực |
 | [QĐ-004](#qđ-004) | Chuẩn hóa RLE Mask, Zero Overlap và phân tầng Z-order cho Semantic Segmentation | 17/09/2026 | [P-005](problem-backlog.md#p-005) | Hiệu lực |
+| [QĐ-005](#qđ-005) | Chuẩn hóa Taxonomy và tự động ánh xạ Alias Class (28->0, 29->8, 30->9) | 17/09/2026 | [P-006](problem-backlog.md#p-006) | Hiệu lực |
+| [QĐ-006](#qđ-006) | Lọc bỏ tự động đa giác rác (< 10 px²) và khuyến nghị dùng cọ Brush Mask | 17/09/2026 | [P-007](problem-backlog.md#p-007) | Hiệu lực |
+| [QĐ-007](#qđ-007) | Quy tắc phân định Tường rào (`wall`) vs Tòa nhà (`building`) và ranh giới Bờ kè đá | 17/09/2026 | [P-008](problem-backlog.md#p-008) | Hiệu lực |
 
 **Trạng thái:** Hiệu lực · Bị thay bởi QĐ-xxx · Huỷ (ghi lý do)
 
@@ -60,7 +63,7 @@ cũ được gán theo cách cũ.
 **Chuẩn hóa Pre-annotation bằng YOLO11m và logic tự động truncated/occluded**
 
 - **Ngày:** 17/09/2026
-- **Người tham gia:** @ManhLD424 (chốt), @thanh-vien-it2, @thanh-vien-it3
+- **Người tham gia:** Lê Đức Mạnh (chốt), Võ Trọng Nghĩa, Vũ Việt Long
 - **Xuất phát từ:** [P-003](problem-backlog.md#p-003) và [P-004](problem-backlog.md#p-004)
 - **Bối cảnh:** Vẽ tay hàng trăm bounding box trên CVAT tốn quá nhiều thời gian và thường xuyên bỏ sót các biển báo nhỏ ở xa (§7 Completeness) hoặc quên bật thuộc tính `truncated`/`occluded` (§3.1).
 - **Các phương án đã cân nhắc:**
@@ -68,8 +71,8 @@ cũ được gán theo cách cũ.
   2. *Phát triển pipeline AI Pre-annotation tự động hóa bằng YOLO11m BDD100k ONNX kết hợp phân tích tọa độ* — mô hình phát hiện bao quát 10 class giao thông, thuật toán tự động tính toán tiếp xúc biên ảnh (`truncated`) và chồng lấn IoU (`occluded`), đẩy trực tiếp qua CVAT REST API, thành viên chuyển sang vai trò rà soát chất lượng. **Chọn.**
 - **Quyết định:** Sử dụng công cụ `auto-annotator` trong `source-tool/` để sinh nhãn sơ bộ cho các job BBox dày đặc. Annotator và Reviewer rà soát 100% kết quả trước khi chốt job.
 - **Việc phải làm theo:**
-  - [x] Đã áp dụng thành công cho Job 1447 (sinh 333 annotations chất lượng cao) (@ManhLD424)
-  - [ ] Đóng gói script dễ chạy cho toàn đội sử dụng từ tuần 2 (@ManhLD424)
+  - [x] Đã áp dụng thành công cho Job 1447 (sinh 333 annotations chất lượng cao) (Lê Đức Mạnh)
+  - [ ] Đóng gói script dễ chạy cho toàn đội sử dụng từ tuần 2 (Lê Đức Mạnh)
 - **Trạng thái:** Hiệu lực
 
 ## QĐ-004
@@ -77,7 +80,7 @@ cũ được gán theo cách cũ.
 **Chuẩn hóa RLE Mask, Zero Overlap và phân tầng Z-order cho Semantic Segmentation**
 
 - **Ngày:** 17/09/2026
-- **Người tham gia:** @ManhLD424 (chốt), @thanh-vien-it2, @thanh-vien-it3
+- **Người tham gia:** Lê Đức Mạnh (chốt), Võ Trọng Nghĩa, Vũ Việt Long
 - **Xuất phát từ:** [P-005](problem-backlog.md#p-005)
 - **Bối cảnh:** Việc sử dụng đa giác (polygon) cho phân đoạn ngữ nghĩa 19 class Cityscapes gây phân mảnh hàng trăm mảnh nhỏ, răng cưa biên, và dễ tạo khe hở vi phạm Rule 01 (Zero Overlap).
 - **Các phương án đã cân nhắc:**
@@ -85,8 +88,63 @@ cũ được gán theo cách cũ.
   2. *Sử dụng định dạng Bitmask / RLE Mask bản địa của CVAT (`type: "mask"`)* kết hợp mô hình SegFormer B2 nội suy Bilinear Logits và YOLO11x-seg retina: gộp toàn bộ nền lớn thành 1 mask thống nhất (Z-order = 0), các đối tượng tiền cảnh tách thành từng ca thể độc lập (Z-order = 1). **Chọn.**
 - **Quyết định:** Mọi tác vụ Semantic Segmentation phải tuân thủ chuẩn RLE Mask, phân tầng Z-order rõ ràng, đảm bảo tuyệt đối không có pixel nào bị chồng lấn giữa 2 class (Rule 01) và không suy đoán phần bị che khuất (Rule 02).
 - **Việc phải làm theo:**
-  - [x] Đã chạy nghiệm thu thành công 734 masks cho Job 1663 (@ManhLD424)
+  - [x] Đã chạy nghiệm thu thành công 734 masks cho Job 1663 (Lê Đức Mạnh)
   - [x] Lưu trữ bộ ảnh overlay trực quan tại `vis_clean_masks_1663/` để phục vụ báo cáo Mentor
+- **Trạng thái:** Hiệu lực
+
+## QĐ-005
+
+**Chuẩn hóa Taxonomy và tự động ánh xạ Alias Class (28->0, 29->8, 30->9)**
+
+- **Ngày:** 17/09/2026
+- **Người tham gia:** Lê Đức Mạnh (chốt), Võ Trọng Nghĩa, Tống Thanh Danh, Vũ Việt Long
+- **Xuất phát từ:** [P-006](problem-backlog.md#p-006)
+- **Bối cảnh:** Danh sách cấu hình nhãn trên CVAT xuất hiện đồng thời cả bộ nhãn chuẩn BDD100K gốc (dấu cách) và bộ nhãn YOLO/COCO (gạch dưới). Bạn Tống Thanh Danh gán 91 đối tượng theo nhãn alias ở cuối danh sách (21x `person` - 28, 36x `traffic_light` - 29, 34x `traffic_sign` - 30), gây lệch định danh class khi huấn luyện hoặc tính IoU.
+- **Các phương án đã cân nhắc:**
+  1. *Yêu cầu thành viên sửa thủ công 91 đối tượng trên CVAT* — tốn kém thời gian và dễ sửa sót. Loại.
+  2. *Viết tool tự động chuẩn hóa ID và ánh xạ alias (`clean_and_remap.py`)* — đồng nhất 100% dữ liệu tự động, loại bỏ rủi ro con người. **Chọn.**
+- **Quyết định:** Toàn đội thống nhất quy chuẩn class ID gốc: `0: pedestrian`, `8: traffic light`, `9: traffic sign`. Triển khai script `source-tool/polygon-cleaner/clean_and_remap.py` để tự động hóa kiểm định và remap 100% tệp nhãn của các thành viên.
+- **Việc phải làm theo:**
+  - [x] Viết công cụ `clean_and_remap.py` trong `source-tool/polygon-cleaner/` (Lê Đức Mạnh)
+  - [x] Phổ biến cho các bạn Phi IT quy tắc chọn nhãn đúng trên CVAT (Võ Trọng Nghĩa)
+- **Trạng thái:** Hiệu lực
+
+## QĐ-006
+
+**Lọc bỏ tự động đa giác rác (< 10 px²) và khuyến nghị dùng cọ Brush Mask**
+
+- **Ngày:** 17/09/2026
+- **Người tham gia:** Lê Đức Mạnh (chốt), Võ Trọng Nghĩa, Vũ Việt Long, Tống Thanh Danh
+- **Xuất phát từ:** [P-007](problem-backlog.md#p-007)
+- **Bối cảnh:** Trong 2.916 đa giác gán tay của tập G04, có tới 914 đa giác (31.3%) diện tích `< 10 px²` và 58 đa giác suy biến `< 1 px²` do thao tác vẽ tay tỉ mỉ các tán cây (`vegetation`) và viền nhà (`building`). Các đa giác rác này làm giảm điểm mAP và tăng thời gian tải ảnh.
+- **Các phương án đã cân nhắc:**
+  1. *Giữ nguyên toàn bộ đa giác rác* — gây nhiễu dữ liệu và phạt điểm khi benchmark. Loại.
+  2. *Lọc bỏ tự động bằng ngưỡng diện tích `min_area = 10.0 px²`* và khuyến nghị annotator dùng công cụ cọ Brush hoặc AI Segmentation. **Chọn.**
+- **Quyết định:** Áp dụng ngưỡng lọc tự động: Loại bỏ mọi đa giác có diện tích `< 10 px²` hoặc `< 3` đỉnh. Hướng dẫn thành viên nhóm G04 chuyển sang dùng công cụ Brush trên CVAT để tô vùng nền lớn thay vì vẽ đa giác con.
+- **Việc phải làm theo:**
+  - [x] Tích hợp logic lọc diện tích vào `clean_and_remap.py` (Lê Đức Mạnh)
+  - [x] Hướng dẫn bạn Danh thao tác với cọ Brush trên CVAT (Võ Trọng Nghĩa)
+- **Trạng thái:** Hiệu lực
+
+## QĐ-007
+
+**Quy tắc phân định Tường rào (`wall`) vs Tòa nhà (`building`) và ranh giới Bờ kè đá**
+
+- **Ngày:** 17/09/2026
+- **Người tham gia:** Lê Đức Mạnh (chốt), Võ Trọng Nghĩa, Tống Thanh Danh, Phạm Hoàng Anh
+- **Xuất phát từ:** [P-008](problem-backlog.md#p-008)
+- **Bối cảnh:** Khung cảnh đường dốc đô thị (G04_S001) xuất hiện bờ kè đá lớn chống sạt lở giáp chân tường nhà dân sát mép vỉa hè. Annotator gặp khó khăn trong việc phân biệt đâu là `wall`, đâu là `building`, và gờ đảo bộ hành gán là gì.
+- **Các phương án đã cân nhắc:**
+  1. *Gộp toàn bộ bờ kè đá vào `building`* — sai bản chất cấu trúc hạ tầng giao thông. Loại.
+  2. *Phân tách theo chức năng kết cấu không gian* — rõ ràng, trực quan, đúng chuẩn Cityscapes. **Chọn.**
+- **Quyết định:**
+  - *Tường (`wall` - Class 22)*: Bờ kè đá chống sạt lở độc lập ngoài trời, tường rào hoa sắt xây gạch bao quanh khu đất.
+  - *Tòa nhà (`building` - Class 21)*: Kết cấu kín có mái che, tường nhà ở, cửa sổ, ban công.
+  - *Vỉa hè (`sidewalk` - Class 20)*: Toàn bộ mặt hè dành cho người đi bộ, bao gồm cả gờ đảo bộ hành nổi cao viền sọc đen trắng.
+  - *Địa hình (`terrain` - Class 26)*: Dải đất/cỏ tự nhiên dốc không có cây cao.
+- **Việc phải làm theo:**
+  - [x] Áp dụng chuẩn này cho 25 ảnh nhóm G04 (Tống Thanh Danh)
+  - [x] Lưu trữ ảnh minh chứng `issue_p008_wall_vs_building_boundary.jpg` vào kho tài liệu đội (Võ Trọng Nghĩa)
 - **Trạng thái:** Hiệu lực
 
 ---

@@ -16,6 +16,9 @@ mỗi người sẽ tự xử lý theo một kiểu — và đó là nguồn l�
 | [P-003](#p-003) | Phải vẽ lại box y hệt qua nhiều frame liên tiếp | Pain point công cụ | — | ✅ Đã chốt | [QĐ-003](so-quyet-dinh.md#qđ-003) & [auto-annotator](source-tool/auto-annotator/) |
 | [P-004](#p-004) | Vẽ tay hàng trăm BBox đường phố rất chậm và dễ sót biển/đèn ở xa | Pain point công cụ | §2, §3, §7 | ✅ Đã chốt | [QĐ-003](so-quyet-dinh.md#qđ-003) & [auto-annotator](source-tool/auto-annotator/) |
 | [P-005](#p-005) | Phân đoạn ngữ nghĩa bị phân mảnh khi dùng đa giác và cần trích xuất RLE Mask | Pain point công cụ | §1, §2 | ✅ Đã chốt | [QĐ-004](so-quyet-dinh.md#qđ-004) & [semantic-segmenter](source-tool/semantic-segmenter/) |
+| [P-006](#p-006) | Lệch taxonomy nhãn CVAT giữa BDD100k và YOLO format (`person`, `traffic_light`, `traffic_sign`) | Guideline mơ hồ | §2, Taxonomy | ✅ Đã chốt | [QĐ-005](so-quyet-dinh.md#qđ-005) & [polygon-cleaner](source-tool/polygon-cleaner/) |
+| [P-007](#p-007) | Phân mảnh đa giác và 914 đa giác rác siêu nhỏ (< 10 px²) khi gán nhãn thủ công | Pain point công cụ | Rule 01, §2 | ✅ Đã chốt | [QĐ-006](so-quyet-dinh.md#qđ-006) & [polygon-cleaner](source-tool/polygon-cleaner/) |
+| [P-008](#p-008) | Tranh chấp ranh giới Tường bờ kè (`wall`) vs Tòa nhà (`building`) vs Vỉa hè (`sidewalk`) | Guideline chưa nói tới | Rule 01, Rule 03 | ✅ Đã chốt | [QĐ-007](so-quyet-dinh.md#qđ-007) |
 
 **Loại**
 
@@ -106,6 +109,66 @@ mỗi người sẽ tự xử lý theo một kiểu — và đó là nguồn l�
   2. Xây dựng pipeline lai (Hybrid SegFormer B0 + YOLO11m BDD100k) với bộ nội suy Bilinear Logits để loại bỏ răng cưa và cứu các vùng xe bị lóa sáng/mờ kính.
   3. Gộp các lớp nền thành 1 mask thống nhất duy nhất cho mỗi lớp (Z-order = 0), các đối tượng tiền cảnh tách instance (Z-order = 1).
 - **Kết quả:** Đã triển khai tool hoàn chỉnh tại [`source-tool/semantic-segmenter/`](source-tool/semantic-segmenter/) và upload thành công 882 clean masks lên Job 1663.
+## P-006
+
+**Lệch taxonomy nhãn CVAT giữa BDD100k và YOLO format (`person`, `traffic_light`, `traffic_sign`)**
+
+- **Loại:** Guideline mơ hồ
+- **Mục guideline:** §2 (Taxonomy nhãn đối tượng và quy ước định danh)
+- **Người phát hiện:** Tống Thanh Danh (02299) & Buddy Võ Trọng Nghĩa (02072) · 17/09/2026
+- **Link CVAT & Minh chứng:**
+  - https://cvat.note.transformerlabs.ai/tasks/203/jobs/1663?frame=7 — Frame G04_S008 xuất hiện đồng thời người đi bộ, đèn tín hiệu và biển báo
+  - Minh chứng hình ảnh: ![Minh chứng P-006](submissions/w1-segmentation-G04-Danh/docs_images/issue_p006_taxonomy_alias.jpg)
+- **Mô tả:** Trong tập gán nhãn Semantic Segmentation G04, khi kiểm tra 25 frame của bạn Tống Thanh Danh, phát hiện:
+  1. Có 21 đối tượng được gán Class 28 (`person`) thay vì Class 0 (`pedestrian`).
+  2. Có 36 đối tượng được gán Class 29 (`traffic_light` có gạch dưới) thay vì Class 8 (`traffic light` có dấu cách).
+  3. Có 34 đối tượng được gán Class 30 (`traffic_sign` có gạch dưới) thay vì Class 9 (`traffic sign` có dấu cách).
+  - *Nguyên nhân:* Giao diện CVAT khi nạp cấu hình nhãn YOLO xuất hiện đồng thời cả bộ nhãn BDD100K chuẩn và nhãn YOLO alias. Thành viên mới/phi IT cuộn xuống dưới và chọn các nhãn có gạch dưới hoặc nhãn `person`, dẫn đến lệch class ID hoàn toàn khi huấn luyện hoặc tính IoU/mAP.
+- **Các cách hiểu:**
+  1. Giữ nguyên theo nhãn mà CVAT cho phép chọn -> Gây lỗi không đồng nhất dữ liệu giữa các thành viên trong đội.
+  2. Bắt buộc sửa tay từng đối tượng trên CVAT -> Rất mất thời gian (91 đối tượng).
+  3. Sử dụng script tự động remap đồng bộ 100% về mã chuẩn (`28 -> 0`, `29 -> 8`, `30 -> 9`).
+- **Xử lý tạm trong lúc chờ:** Ban hành quy chuẩn chọn nhãn nội bộ và áp dụng script remap.
+- **Kết quả:** ✅ [QĐ-005](so-quyet-dinh.md#qđ-005) & Công cụ [`source-tool/polygon-cleaner/`](source-tool/polygon-cleaner/).
+
+## P-007
+
+**Phân mảnh đa giác và 914 đa giác rác siêu nhỏ (< 10 px²) khi gán nhãn thủ công**
+
+- **Loại:** Pain point công cụ
+- **Mục guideline:** Rule 01 (Zero Overlap), §2 (Danh mục phân đoạn)
+- **Người phát hiện:** Tống Thanh Danh (02299) & QA Auditor Lê Đức Mạnh (02122) · 17/09/2026
+- **Link CVAT & Minh chứng:**
+  - https://cvat.note.transformerlabs.ai/tasks/203/jobs/1663?frame=0 — Frame G04_S001 có tới 221 đa giác thủ công
+  - Minh chứng hình ảnh: ![Minh chứng P-007](submissions/w1-segmentation-G04-Danh/docs_images/issue_p007_tiny_polygons_fragmentation.jpg)
+- **Mô tả:** Khi gán nhãn Semantic Segmentation bằng công cụ Polygon thủ công trên CVAT:
+  1. Toàn bộ 25 frame của Danh có tới **914 / 2.916 đa giác (chiếm 31.3%)** có diện tích siêu nhỏ `< 10 px²`, trong đó có **58 đa giác suy biến (degenerate)** diện tích `< 1 px²`.
+  2. Các lớp nền diện tích lớn như `vegetation` (630 đa giác) và `building` (586 đa giác) bị chia nhỏ thành hàng chục mảnh vụn rời rạc do tán cây, dây điện và cột đèn che cắt ngang.
+  - Việc vẽ tay hàng trăm mảnh vụn này gây mỏi mắt, thao tác click đúp tạo ra nhiều điểm trượt (slivers) làm giảm độ chính xác và gây nặng nề khi nạp dữ liệu.
+- **Hướng đang cân nhắc:**
+  1. Viết script tự động tính diện tích pixel và lọc bỏ toàn bộ các đa giác rác `< 10 px²` và đa giác suy biến `< 1 px²`.
+  2. Phổ biến cho annotator chuyển sang sử dụng cọ Brush (Mask RLE) hoặc công cụ AI `semantic-segmenter` đã được đội xây dựng.
+- **Kết quả:** ✅ [QĐ-006](so-quyet-dinh.md#qđ-006) & Công cụ [`source-tool/polygon-cleaner/`](source-tool/polygon-cleaner/).
+
+## P-008
+
+**Tranh chấp ranh giới Tường bờ kè (`wall`) vs Tòa nhà (`building`) vs Vỉa hè (`sidewalk`)**
+
+- **Loại:** Guideline chưa nói tới
+- **Mục guideline:** Rule 01 (Zero Overlap), Rule 03 (Strict Boundary)
+- **Người phát hiện:** Tống Thanh Danh (02299) & Buddy Võ Trọng Nghĩa (02072) · 17/09/2026
+- **Link CVAT & Minh chứng:**
+  - https://cvat.note.transformerlabs.ai/tasks/203/jobs/1663?frame=0 — Frame G04_S001 bờ kè đá giật cấp chân công trình bên phải
+  - Minh chứng hình ảnh: ![Minh chứng P-008](submissions/w1-segmentation-G04-Danh/docs_images/issue_p008_wall_vs_building_boundary.jpg)
+- **Mô tả:** Trong các khung cảnh đô thị miền núi hoặc đường dốc (như G04_S001, G04_S002, G04_S015), xuất hiện bờ kè đá lớn giật cấp để chống sạt lở nằm ngay dưới chân tường nhà dân sát mép đường. Annotator phân vân:
+  1. Bờ kè đá gắn liền với kết cấu nhà nên gán là `building` hay tách riêng là `wall`?
+  2. Dải đất/thảm cỏ hẹp bên trên bờ kè gán là `terrain` hay `vegetation`?
+  3. Gờ đảo giao thông có vạch sơn đen trắng nổi cao giữa ngã ba gán `sidewalk` hay `road`?
+- **Các cách hiểu:**
+  1. Gộp toàn bộ bờ kè vào `building` vì nằm sát chân nhà dân.
+  2. Tách bờ kè đá độc lập ngoài trời thành `wall`, kết cấu kín có tường gạch và mái nhà mới tính là `building`. Đảo giao thông bộ hành gán `sidewalk`.
+- **Xử lý tạm trong lúc chờ:** Áp dụng theo hướng 2 theo thống nhất nội bộ.
+- **Kết quả:** ✅ [QĐ-007](so-quyet-dinh.md#qđ-007).
 
 ---
 

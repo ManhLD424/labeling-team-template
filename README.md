@@ -14,7 +14,8 @@ Kho lưu trữ và quản lý quy trình gán nhãn dữ liệu (Data Labeling, 
 | [`nhat-ky-tuan/`](nhat-ky-tuan/) | Nhật ký tiến độ chi tiết: phân công job, % hoàn thành, tỉ lệ review lỗi (First-pass Yield) | Cập nhật liên tục, chốt trước 12:00 trưa ngày Mentor Duty |
 | [`problem-backlog.md`](problem-backlog.md) | Sổ theo dõi edge cases, ca mơ hồ/chưa rõ luật trên CVAT (trỏ đúng URL frame) và pain points công cụ | **Ngay khi gặp** trong lúc gán nhãn |
 | [`so-quyet-dinh.md`](so-quyet-dinh.md) | Sổ lưu trữ các quy tắc và quyết định đã thống nhất của đội (QĐ-xxx) kèm lý do lựa chọn | Mỗi khi đội chốt phương án cho một P-xxx |
-| [`source-tool/`](source-tool/) | Mã nguồn các công cụ tự động hóa do đội tự phát triển (`auto-annotator`, `semantic-segmenter`, `browser-copilot`) | Khi giải quyết pain point công cụ thực tế |
+| [`submissions/`](submissions/) | Lưu trữ các tập dữ liệu, nhãn và báo cáo bài làm thực tế của các thành viên trong đội | Khi thành viên hoàn thành và qua nghiệm thu |
+| [`source-tool/`](source-tool/) | Mã nguồn các công cụ tự động hóa do đội tự phát triển (`auto-annotator`, `semantic-segmenter`, `polygon-cleaner`, `browser-copilot`) | Khi giải quyết pain point công cụ thực tế |
 
 ```mermaid
 flowchart LR
@@ -53,6 +54,7 @@ flowchart LR
   - [Job 1447](https://cvat.note.transformerlabs.ai/tasks/149/jobs/1447) (25 frames — Đã hoàn thành sơ bộ 333 annotations và review 100%)
 - **Task 203 (Semantic Segmentation 19 Classes Cityscapes):**
   - [Job 1663](https://cvat.note.transformerlabs.ai/tasks/203/jobs/1663) (25 frames — Đã hoàn thành 734 clean masks RLE và nghiệm thu)
+  - **Tập Phân đoạn Ngữ nghĩa Nhóm G04 (Tuần 01):** [w1/segmentation/G04/](submissions/w1-segmentation-G04-Danh/) (25 frames — Bạn Tống Thanh Danh gán xong 100%, 2.916 đa giác, đã nghiệm thu qua Buddy System kèm kiểm định chất lượng)
 
 ---
 
