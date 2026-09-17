@@ -27,7 +27,7 @@ cũ được gán theo cách cũ.
 **Người ngồi sau xe máy có box `rider`/`pedestrian` riêng**
 
 - **Ngày:** 15/09/2026
-- **Người tham gia:** @ManhLD424 (chốt), @thanh-vien-it2, @thanh-vien-it3, @thanh-vien-phi-it1, @thanh-vien-phi-it2
+- **Người tham gia:** Lê Đức Mạnh (chốt), Võ Trọng Nghĩa, Vũ Việt Long, Tống Thanh Danh, Phạm Hoàng Anh
 - **Xuất phát từ:** [P-001](problem-backlog.md#p-001)
 - **Bối cảnh:** §3.2 của guideline nói mỗi người một box, nhưng hình minh hoạ lại vẽ chung một box cho cả xe máy lẫn người trên xe. Các annotator đang hiểu theo hai hướng khác nhau.
 - **Các phương án đã cân nhắc:**
@@ -35,7 +35,7 @@ cũ được gán theo cách cũ.
   2. *Box riêng cho từng người* — tuân thủ câu chữ §3.2 và giữ toàn vẹn số người tham gia giao thông. **Chọn.**
 - **Quyết định:** Mỗi người trên xe máy (người lái gán `rider`, người ngồi sau nếu không điều khiển gán theo phân loại guideline), kể cả người ngồi sau chỉ lộ đầu, có một box riêng. Box xe máy vẫn vẽ bao quát toàn bộ phương tiện như bình thường.
 - **Việc phải làm theo:**
-  - [x] Rà soát lại các frame có xe máy chở đôi ở Job 1447 và 1450 (@thanh-vien-phi-it1)
+  - [x] Rà soát lại các frame có xe máy chở đôi ở Job 1447 và 1450 (Tống Thanh Danh)
   - [x] Thông báo và ghim quy tắc trong kênh trao đổi nội bộ của đội
 - **Trạng thái:** Hiệu lực
 
@@ -44,7 +44,7 @@ cũ được gán theo cách cũ.
 **Reviewer trả nguyên job khi mẫu kiểm có trên 10% ảnh sai**
 
 - **Ngày:** 16/09/2026
-- **Người tham gia:** @ManhLD424 (chốt), @thanh-vien-it2, @thanh-vien-it3
+- **Người tham gia:** Lê Đức Mạnh (chốt), Võ Trọng Nghĩa, Vũ Việt Long
 - **Xuất phát từ:** Quy trình đảm bảo chất lượng (QA) nội bộ
 - **Bối cảnh:** Tránh tình trạng sửa lỗi rải rác từng ảnh khiến Reviewer làm thay công việc của Annotator, đồng thời nâng cao ý thức tự kiểm tra (Self-QC) của thành viên gán nhãn.
 - **Các phương án đã cân nhắc:**
@@ -52,7 +52,7 @@ cũ được gán theo cách cũ.
   2. *Kiểm ngẫu nhiên 20% ảnh, sai trên 10% thì trả nguyên job* — annotator tự rà soát lại toàn bộ job theo danh sách lỗi mẫu đã được chỉ ra. **Chọn.**
 - **Quyết định:** Reviewer kiểm tra ngẫu nhiên 20% số ảnh trong mỗi job. Nếu phát hiện trên 10% số ảnh được kiểm mắc lỗi (vi phạm shape, nhãn hoặc thuộc tính) thì từ chối nghiệm thu, trả nguyên job kèm ghi chú lỗi để Annotator tự sửa toàn bộ trước khi nộp lại.
 - **Việc phải làm theo:**
-  - [x] Áp dụng bắt buộc cho mọi job do các thành viên nộp (@thanh-vien-it2, @thanh-vien-it3)
+  - [x] Áp dụng bắt buộc cho mọi job do các thành viên nộp (Võ Trọng Nghĩa, Vũ Việt Long)
 - **Trạng thái:** Hiệu lực
 
 ## QĐ-003

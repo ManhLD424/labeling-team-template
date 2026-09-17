@@ -35,11 +35,11 @@ flowchart LR
 
 | Vị trí | Thành viên / Handle | Nhiệm vụ chính |
 |---|---|---|
-| **Lead & Quality Auditor** | Lê Đức Mạnh ([@ManhLD424](https://github.com/ManhLD424) · MSSV: `2A202602122`) | Điều phối Task/Job trên CVAT, quản trị repo GitHub, giữ Sổ quyết định, phát triển automation tools, audit ngẫu nhiên 15-20% mọi job, nộp báo cáo Mentor Duty |
-| **Reviewer chính 1 · Buddy** | Thành viên IT 2 (`@thanh-vien-it2`) | Làm Buddy kèm cặp 1-1 cho Bạn Phi IT 1; Review 100% job của Phi IT 1; gán job được phân công; hỗ trợ phát triển tool |
-| **Reviewer chính 2 · Buddy** | Thành viên IT 3 (`@thanh-vien-it3`) | Làm Buddy kèm cặp 1-1 cho Bạn Phi IT 2; Review 100% job của Phi IT 2; gán job được phân công; cùng biểu quyết các ca edge cases |
-| **Annotator chuyên trách 1** | Thành viên Phi IT 1 (`@thanh-vien-phi-it1`) | Tập trung gán nhãn tỉ mỉ theo guideline; khi gặp ca khó thực hiện Open Issue trên CVAT và báo Buddy IT 2; sửa các frame được trả về |
-| **Annotator chuyên trách 2** | Thành viên Phi IT 2 (`@thanh-vien-phi-it2`) | Tập trung gán nhãn chi tiết đúng shape; Open Issue trên CVAT khi gặp vật thể mờ/khuất; phối hợp cùng Buddy IT 3 |
+| **Lead & Quality Auditor** | Lê Đức Mạnh ([@ManhLD424](https://github.com/ManhLD424) · MSSV: `02122`) | Điều phối Task/Job trên CVAT, quản trị repo GitHub, giữ Sổ quyết định, phát triển automation tools, audit ngẫu nhiên 15-20% mọi job, nộp báo cáo Mentor Duty |
+| **Reviewer chính 1 · Buddy** | Võ Trọng Nghĩa (MSSV: `02072`) | Làm Buddy kèm cặp 1-1 cho Bạn Tống Thanh Danh; Review 100% job của Tống Thanh Danh; gán job được phân công; hỗ trợ phát triển tool |
+| **Reviewer chính 2 · Buddy** | Vũ Việt Long (MSSV: `02341`) | Làm Buddy kèm cặp 1-1 cho Bạn Phạm Hoàng Anh; Review 100% job của Phạm Hoàng Anh; gán job được phân công; cùng biểu quyết các ca edge cases |
+| **Annotator chuyên trách 1** | Tống Thanh Danh (MSSV: `02299`) | Tập trung gán nhãn tỉ mỉ theo guideline; khi gặp ca khó thực hiện Open Issue trên CVAT và báo Buddy Võ Trọng Nghĩa hỗ trợ; sửa các frame được trả về |
+| **Annotator chuyên trách 2** | Phạm Hoàng Anh (MSSV: `02128`) | Tập trung gán nhãn chi tiết đúng shape; Open Issue trên CVAT khi gặp vật thể mờ/khuất; phối hợp cùng Buddy Vũ Việt Long |
 
 > [!IMPORTANT]
 > **Nguyên tắc vàng**: Tuyệt đối **không ai được tự review job do chính mình gán**. Mọi job đều phải qua Review chéo và đạt nghiệm thu trước khi đánh dấu hoàn thành.

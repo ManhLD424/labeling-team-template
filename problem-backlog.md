@@ -36,7 +36,7 @@ mỗi người sẽ tự xử lý theo một kiểu — và đó là nguồn l�
 
 - **Loại:** Guideline mơ hồ
 - **Mục guideline:** §3.2 — "mỗi người một bounding box"
-- **Người phát hiện:** @thanh-vien-phi-it1 · 15/09/2026
+- **Người phát hiện:** Tống Thanh Danh (02299) · 15/09/2026
 - **Link CVAT:**
   - https://cvat.note.transformerlabs.ai/tasks/149/jobs/1447?frame=5 — hai người ngồi trên xe máy
   - https://cvat.note.transformerlabs.ai/tasks/149/jobs/1447?frame=12 — người ngồi sau chỉ lộ đầu và vai
@@ -53,7 +53,7 @@ mỗi người sẽ tự xử lý theo một kiểu — và đó là nguồn l�
 
 - **Loại:** Guideline chưa nói tới
 - **Mục guideline:** §3.4 — chỉ nói về vật thể bị cắt ở mép ảnh (truncated), không nói về bị che khuất (occluded)
-- **Người phát hiện:** @thanh-vien-phi-it2 · 16/09/2026
+- **Người phát hiện:** Phạm Hoàng Anh (02128) · 16/09/2026
 - **Link CVAT:**
   - https://cvat.note.transformerlabs.ai/tasks/149/jobs/1447?frame=14 — ô tô đỗ sau xe tải lớn, chỉ thò ra khoảng 30% phần đầu xe
   - https://cvat.note.transformerlabs.ai/tasks/149/jobs/1451?frame=10 — xe máy sau hàng rào/cột điện, lộ dưới 40%
@@ -71,7 +71,7 @@ mỗi người sẽ tự xử lý theo một kiểu — và đó là nguồn l�
 
 - **Loại:** Pain point công cụ
 - **Mục guideline:** —
-- **Người phát hiện:** @thanh-vien-it3 · 16/09/2026
+- **Người phát hiện:** Vũ Việt Long (02341) · 16/09/2026
 - **Link CVAT:** https://cvat.note.transformerlabs.ai/tasks/149/jobs/1447?frame=0 — frame 0–10, xe ô tô đỗ ven đường đứng yên
 - **Mô tả:** Ảnh chụp từ camera tĩnh hoặc xe dừng đèn đỏ, nhiều phương tiện đỗ bên đường xuất hiện y nguyên ở hàng loạt frame. Thao tác vẽ tay từng box lặp lại gây mất 40% tổng thời lượng.
 - **Hướng đang cân nhắc:**
@@ -85,7 +85,7 @@ mỗi người sẽ tự xử lý theo một kiểu — và đó là nguồn l�
 
 - **Loại:** Pain point công cụ
 - **Mục guideline:** §2 (Taxonomy 10 classes), §3.1 (Truncated & Occluded), §7 (Completeness)
-- **Người phát hiện:** @2A202602122 · 17/09/2026
+- **Người phát hiện:** Lê Đức Mạnh (02122) · 17/09/2026
 - **Link CVAT:** https://cvat.note.transformerlabs.ai/tasks/149/jobs/1447 — Job 1447 gồm 25 ảnh giao thông đô thị dày đặc
 - **Mô tả:** Trong cảnh đường phố có mật độ phương tiện và biển báo cao, việc vẽ tay thủ công từng box cho hàng chục ảnh tốn hàng giờ đồng hồ, đồng thời rất dễ bỏ sót các đèn/biển giao thông nhỏ ở xa (vi phạm tiêu chí Completeness). Ngoài ra việc tích thủ công thuộc tính `truncated` và `occluded` dễ bị quên.
 - **Hướng đang cân nhắc:**
@@ -98,7 +98,7 @@ mỗi người sẽ tự xử lý theo một kiểu — và đó là nguồn l�
 
 - **Loại:** Pain point công cụ
 - **Mục guideline:** §1 (Phạm vi & nguyên tắc), §2 (Danh sách 19 class Cityscapes)
-- **Người phát hiện:** @2A202602122 · 17/09/2026
+- **Người phát hiện:** Lê Đức Mạnh (02122) · 17/09/2026
 - **Link CVAT:** https://cvat.note.transformerlabs.ai/tasks/203/jobs/1663 — Job 1663 Semantic Segmentation (25 frames)
 - **Mô tả:** Trong tài liệu `Semantic_Segmentation_Annotation_Guideline.pdf`, quy định phân đoạn 19 class Cityscapes. Ban đầu khi gọi CVAT REST API mặc định trả về 10 nhãn do pagination (`page_size=10`). Khi truy vấn với `page_size=100`, Job 1663 thực tế có đầy đủ 31 nhãn (bao gồm toàn bộ các lớp nền `road`, `sidewalk`, `building`, `sky`, `vegetation`, `wall`, `fence`, `pole`, `terrain` và các đối tượng). Ngoài ra, việc dùng đa giác (polygon) cho phân đoạn ngữ nghĩa gây phân mảnh hàng trăm mảnh nhỏ và răng cưa.
 - **Hướng đang cân nhắc:**

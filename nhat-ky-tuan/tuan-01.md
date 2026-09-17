@@ -12,13 +12,13 @@
 
 Mô hình vận hành: **3 IT + 2 Phi IT** kết hợp cơ chế kèm cặp 1-1 và kiểm duyệt chéo (Cross-Review), cam kết **không ai tự review bài của chính mình**:
 
-| Thành viên | Handle GitHub | Vai trò chính | Phân công tuần 1 |
+| Thành viên | MSSV / Handle | Vai trò chính | Phân công tuần 1 |
 |---|---|---|---|
-| Lê Đức Mạnh | `@ManhLD424` | Lead · Quality Auditor · Tool Dev | Điều phối chung, giữ Sổ quyết định, code tool, Audit xác suất 20% mọi job, phụ trách Job 1447 & 1663 |
-| Thành viên IT 2 | `@thanh-vien-it2` | Reviewer 1 · Buddy · Annotator | Buddy kèm cặp Phi IT 1; Review 100% Job 1450; Gán Job 1448 (25 ảnh) |
-| Thành viên IT 3 | `@thanh-vien-it3` | Reviewer 2 · Buddy · Annotator | Buddy kèm cặp Phi IT 2; Review 100% Job 1451; Gán Job 1449 (25 ảnh) |
-| Thành viên Phi IT 1 | `@thanh-vien-phi-it1` | Annotator chuyên trách | Gán Job 1450 (25 ảnh BBox & Lane); phối hợp với Buddy IT 2 |
-| Thành viên Phi IT 2 | `@thanh-vien-phi-it2` | Annotator chuyên trách | Gán Job 1451 (25 ảnh BBox & Lane); phối hợp với Buddy IT 3 |
+| Lê Đức Mạnh | `@ManhLD424` (MSSV: `02122`) | Lead · Quality Auditor · Tool Dev | Điều phối chung, giữ Sổ quyết định, code tool, Audit xác suất 20% mọi job, phụ trách Job 1447 & 1663 |
+| Võ Trọng Nghĩa | MSSV: `02072` | Reviewer 1 · Buddy · Annotator | Buddy kèm cặp Tống Thanh Danh; Review 100% Job 1450; Gán Job 1448 (25 ảnh) |
+| Vũ Việt Long | MSSV: `02341` | Reviewer 2 · Buddy · Annotator | Buddy kèm cặp Phạm Hoàng Anh; Review 100% Job 1451; Gán Job 1449 (25 ảnh) |
+| Tống Thanh Danh | MSSV: `02299` | Annotator chuyên trách | Gán Job 1450 (25 ảnh BBox & Lane); phối hợp với Buddy Võ Trọng Nghĩa |
+| Phạm Hoàng Anh | MSSV: `02128` | Annotator chuyên trách | Gán Job 1451 (25 ảnh BBox & Lane); phối hợp với Buddy Vũ Việt Long |
 
 ---
 
@@ -26,15 +26,15 @@ Mô hình vận hành: **3 IT + 2 Phi IT** kết hợp cơ chế kèm cặp 1-1 
 
 | # | Nội dung công việc | Annotator | Reviewer | Hoàn thành | Ghi chú & Kết quả |
 |---|---|---|---|---|---|
-| 1 | Nghiên cứu Annotation Guideline v1.0 (§2 Taxonomy, §3 Rules, §7 Completeness) | Cả đội | Lead | ✅ 100% | Thống nhất quy chuẩn nhận diện 10 class BBox, thuộc tính `truncated`/`occluded` |
-| 2 | Nghiên cứu Semantic Segmentation Guideline (19 class Cityscapes, Rule 01/02/03) | Cả đội | Lead | ✅ 100% | Nắm vững Zero Overlap, Strict Visibility và ranh giới các class nền |
-| 3 | **Job 1447 (Task 149)** — 25 ảnh giao thông đô thị dày đặc | @ManhLD424 | @thanh-vien-it2 | ✅ 100% | 333 annotations (BBox/Polyline/Polygon). Ứng dụng `auto-annotator` YOLO11m BDD100k, rà soát 100% |
-| 4 | **Job 1663 (Task 203)** — 25 ảnh Semantic Segmentation | @ManhLD424 | @thanh-vien-it3 | ✅ 100% | 734 clean masks RLE. Ứng dụng `semantic-segmenter` (SegFormer B2 + YOLO11x-seg), loại bỏ răng cưa |
-| 5 | **Job 1448 (Task 149)** — 25 ảnh đường phố đô thị | @thanh-vien-it2 | @thanh-vien-it3 | 🟡 70% | Đang hoàn thiện các ca xe nhỏ và biển báo ở xa theo §7 Completeness |
-| 6 | **Job 1449 (Task 149)** — 25 ảnh đường phố đô thị | @thanh-vien-it3 | @thanh-vien-it2 | 🟡 60% | Đang gán Polygon drivable area và Polyline phân làn |
-| 7 | **Job 1450 (Task 149)** — 25 ảnh đường phố đô thị | @thanh-vien-phi-it1 | @thanh-vien-it2 | 🟡 50% | Đã gán 13/25 ảnh; Buddy IT 2 review chéo, trả 2 ảnh chỉnh sửa theo QĐ-001 (người ngồi sau xe máy) |
-| 8 | **Job 1451 (Task 149)** — 25 ảnh đường phố đô thị | @thanh-vien-phi-it2 | @thanh-vien-it3 | ⛔ 40% | Tạm dừng ở frame 10 do gặp nhiều xe bị che khuất > 50%, chờ hướng dẫn [P-002](../problem-backlog.md#p-002) |
-| 9 | Xây dựng bộ công cụ tự động hóa [`source-tool/`](../source-tool/) | @ManhLD424 | Cả đội | ✅ 100% | Hoàn thành `auto-annotator`, `semantic-segmenter`, `browser-copilot` |
+| 1 | Nghiên cứu Annotation Guideline v1.0 (§2 Taxonomy, §3 Rules, §7 Completeness) | Cả đội | Lê Đức Mạnh | ✅ 100% | Thống nhất quy chuẩn nhận diện 10 class BBox, thuộc tính `truncated`/`occluded` |
+| 2 | Nghiên cứu Semantic Segmentation Guideline (19 class Cityscapes, Rule 01/02/03) | Cả đội | Lê Đức Mạnh | ✅ 100% | Nắm vững Zero Overlap, Strict Visibility và ranh giới các class nền |
+| 3 | **Job 1447 (Task 149)** — 25 ảnh giao thông đô thị dày đặc | Lê Đức Mạnh | Võ Trọng Nghĩa | ✅ 100% | 333 annotations (BBox/Polyline/Polygon). Ứng dụng `auto-annotator` YOLO11m BDD100k, rà soát 100% |
+| 4 | **Job 1663 (Task 203)** — 25 ảnh Semantic Segmentation | Lê Đức Mạnh | Vũ Việt Long | ✅ 100% | 734 clean masks RLE. Ứng dụng `semantic-segmenter` (SegFormer B2 + YOLO11x-seg), loại bỏ răng cưa |
+| 5 | **Job 1448 (Task 149)** — 25 ảnh đường phố đô thị | Võ Trọng Nghĩa | Vũ Việt Long | 🟡 70% | Đang hoàn thiện các ca xe nhỏ và biển báo ở xa theo §7 Completeness |
+| 6 | **Job 1449 (Task 149)** — 25 ảnh đường phố đô thị | Vũ Việt Long | Võ Trọng Nghĩa | 🟡 60% | Đang gán Polygon drivable area và Polyline phân làn |
+| 7 | **Job 1450 (Task 149)** — 25 ảnh đường phố đô thị | Tống Thanh Danh | Võ Trọng Nghĩa | 🟡 50% | Đã gán 13/25 ảnh; Buddy Võ Trọng Nghĩa review chéo, trả 2 ảnh sửa theo QĐ-001 (người ngồi sau xe máy) |
+| 8 | **Job 1451 (Task 149)** — 25 ảnh đường phố đô thị | Phạm Hoàng Anh | Vũ Việt Long | ⛔ 40% | Tạm dừng ở frame 10 do gặp nhiều xe bị che khuất > 50%, chờ hướng dẫn [P-002](../problem-backlog.md#p-002) |
+| 9 | Xây dựng bộ công cụ tự động hóa [`source-tool/`](../source-tool/) | Lê Đức Mạnh | Cả đội | ✅ 100% | Hoàn thành `auto-annotator`, `semantic-segmenter`, `browser-copilot` |
 
 *Quy ước:* ✅ Xong và đã qua review nghiệm thu · 🟡 Đang thực hiện · ⛔ Bị chặn (đang chờ giải quyết) · ⬜ Chưa bắt đầu
 
