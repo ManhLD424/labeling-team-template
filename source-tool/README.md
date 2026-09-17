@@ -33,7 +33,10 @@ Thêm tool thì thêm một dòng vào bảng:
 
 | Tool | Giải quyết | Người viết | Trạng thái |
 |---|---|---|---|
-| *(chưa có)* |  |  |  |
+| [`auto-annotator/`](auto-annotator/) | [P-004](../problem-backlog.md#p-004) — Tự động sinh nhãn BBox sơ bộ và gán thuộc tính truncated / occluded | @ManhLD424 | Sẵn sàng sử dụng |
+| [`semantic-segmenter/`](semantic-segmenter/) | [P-005](../problem-backlog.md#p-005) — Tự động phân đoạn Semantic Segmentation 19 class chuẩn Cityscapes & trích xuất RLE Mask | @ManhLD424 | Sẵn sàng sử dụng |
+| [`browser-copilot/`](browser-copilot/) | Co-pilot điều khiển trình duyệt trực tiếp trên Windows qua Chrome DevTools Protocol | @ManhLD424 | Đã cấu hình sẵn sàng |
+| [Universal-AutoLabeler](file:///d:/Project/Universal-AutoLabeler) | Công cụ SOTA Foundation Auto-Labeler: Florence-2, SAM 2, Panoptic Fusion & CVAT REST API | @ManhLD424 | Sẵn sàng sử dụng |
 
 ## Mẫu README cho từng tool
 

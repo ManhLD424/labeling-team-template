@@ -1,0 +1,27 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# ONNX / Weights (auto-downloaded on run)
+*.onnx
+*.pt
+*.bin
+
+# Environment / Tokens
+.env
+CVAT.txt
+
+# Local temporary, inspection, and debug files
+frames_job1447/
+vis_current_ann/
+vis_segmentation*/
+vis_clean_masks*/
+vis_*.jpg
+frame_*.jpg
+audit_frame_*.jpg
+test_orig_*.jpg
+improved_frame_*.jpg
+crop_car_*.jpg
+pure_bilinear_*.jpg
+*.log
