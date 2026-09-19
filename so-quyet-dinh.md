@@ -106,7 +106,7 @@ cũ được gán theo cách cũ.
 - **Quyết định:** Toàn đội thống nhất quy chuẩn class ID gốc: `0: pedestrian`, `8: traffic light`, `9: traffic sign`. Triển khai script `source-tool/polygon-cleaner/clean_and_remap.py` để tự động hóa kiểm định và remap 100% tệp nhãn của các thành viên.
 - **Việc phải làm theo:**
   - [x] Viết công cụ `clean_and_remap.py` trong `source-tool/polygon-cleaner/` (Lê Đức Mạnh)
-  - [x] Phổ biến cho các bạn Phi IT quy tắc chọn nhãn đúng trên CVAT (Võ Trọng Nghĩa)
+  - [x] Phổ biến cho các thành viên quy tắc chọn nhãn đúng trên CVAT (Võ Trọng Nghĩa)
 - **Trạng thái:** Hiệu lực
 
 ## QĐ-006

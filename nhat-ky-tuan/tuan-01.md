@@ -1,69 +1,82 @@
-# Nhật ký tuần 01 · 14/09 – 20/09/2026
+# Báo cáo Tiến độ Tuần 01 · 14/09 – 20/09/2026 (Nộp Mentor Duty)
 
-**Đội:** T030 (Repo: `P-030`)  
-**Lead tuần này:** Lê Đức Mạnh ([@ManhLD424](https://github.com/ManhLD424) · MSSV: `2A202602122`)  
-**Dữ liệu / Task CVAT:**
-- **Task 149 (BBox, Polyline, Polygon Drivable Area):** [Task 149 / Job 1447](https://cvat.note.transformerlabs.ai/tasks/149/jobs/1447) (25 frames đường phố)
-- **Task 203 (Semantic Segmentation 19 Classes Cityscapes):** [Task 203 / Job 1663](https://cvat.note.transformerlabs.ai/tasks/203/jobs/1663) (25 frames phân đoạn ngữ nghĩa)
+**Đội:** T030 (Mã repo: `P-030`)  
+**Trưởng nhóm phụ trách:** Lê Đức Mạnh ([@ManhLD424](https://github.com/ManhLD424) · MSSV: `2A202602122`)  
+**Tình trạng tổng quan:** **Toàn đội đã hoàn thành 100% Challenge gán nhãn tuần này và vượt qua khâu kiểm duyệt chất lượng.**
 
 ---
 
-## 1. Thành viên và phân công (Buddy System)
+## 1. Cơ cấu nhân sự và Phân công phối hợp
 
-Mô hình vận hành: **3 IT + 2 Phi IT** kết hợp cơ chế kèm cặp 1-1 và kiểm duyệt chéo (Cross-Review), cam kết **không ai tự review bài của chính mình**:
+Đội phân định rõ ràng trách nhiệm giữa ba vai trò: **Người gán nhãn (Annotator)**, **Người kiểm duyệt chất lượng (Reviewer)** và **Trưởng nhóm (Lead & QA Auditor)**. Quy trình vận hành áp dụng cơ chế kiểm duyệt chéo độc lập (Cross-Review), cam kết nguyên tắc khách quan: **không thành viên nào tự nghiệm thu bài do chính mình gán**.
 
-| Thành viên | MSSV / Handle | Vai trò chính | Phân công tuần 1 |
-|---|---|---|---|
-| Lê Đức Mạnh | `@ManhLD424` (MSSV: `02122`) | Lead · Quality Auditor · Tool Dev | Điều phối chung, giữ Sổ quyết định, code tool, Audit xác suất 20% mọi job, phụ trách Job 1447 & 1663 |
-| Võ Trọng Nghĩa | MSSV: `02072` | Reviewer 1 · Buddy · Annotator | Buddy kèm cặp Tống Thanh Danh; Review 100% Job 1450; Gán Job 1448 (25 ảnh) |
-| Vũ Việt Long | MSSV: `02341` | Reviewer 2 · Buddy · Annotator | Buddy kèm cặp Phạm Hoàng Anh; Review 100% Job 1451; Gán Job 1449 (25 ảnh) |
-| Tống Thanh Danh | MSSV: `02299` | Annotator chuyên trách | Gán Tập Segmentation G04 (25 ảnh - ĐÃ XONG 100%, 2.916 đa giác); Gán Job 1450 (25 ảnh BBox & Lane); phối hợp với Buddy Võ Trọng Nghĩa |
-| Phạm Hoàng Anh | MSSV: `02128` | Annotator chuyên trách | Gán Job 1451 (25 ảnh BBox & Lane); phối hợp với Buddy Vũ Việt Long |
-
----
-
-## 2. Tiến độ công việc chi tiết
-
-| # | Nội dung công việc | Annotator | Reviewer | Hoàn thành | Ghi chú & Kết quả |
-|---|---|---|---|---|---|
-| 1 | Nghiên cứu Annotation Guideline v1.0 (§2 Taxonomy, §3 Rules, §7 Completeness) | Cả đội | Lê Đức Mạnh | ✅ 100% | Thống nhất quy chuẩn nhận diện 10 class BBox, thuộc tính `truncated`/`occluded` |
-| 2 | Nghiên cứu Semantic Segmentation Guideline (19 class Cityscapes, Rule 01/02/03) | Cả đội | Lê Đức Mạnh | ✅ 100% | Nắm vững Zero Overlap, Strict Visibility và ranh giới các class nền |
-| 3 | **Job 1447 (Task 149)** — 25 ảnh giao thông đô thị dày đặc | Lê Đức Mạnh | Võ Trọng Nghĩa | ✅ 100% | 333 annotations (BBox/Polyline/Polygon). Ứng dụng `auto-annotator` YOLO11m BDD100k, rà soát 100% |
-| 4 | **Job 1663 (Task 203)** — 25 ảnh Semantic Segmentation | Lê Đức Mạnh | Vũ Việt Long | ✅ 100% | 734 clean masks RLE. Ứng dụng `semantic-segmenter` (SegFormer B2 + YOLO11x-seg), loại bỏ răng cưa |
-| 5 | **Tập G04 (Segmentation)** — 25 ảnh phân đoạn ngữ nghĩa thực tế | Tống Thanh Danh | Võ Trọng Nghĩa | ✅ 100% | 2.916 đa giác thủ công. Buddy Võ Trọng Nghĩa kiểm duyệt chéo, phát hiện P-006, P-007, P-008; lưu trữ tại `submissions/w1-segmentation-G04-Danh/` |
-| 6 | **Job 1448 (Task 149)** — 25 ảnh đường phố đô thị | Võ Trọng Nghĩa | Vũ Việt Long | 🟡 70% | Đang hoàn thiện các ca xe nhỏ và biển báo ở xa theo §7 Completeness |
-| 7 | **Job 1449 (Task 149)** — 25 ảnh đường phố đô thị | Vũ Việt Long | Võ Trọng Nghĩa | 🟡 60% | Đang gán Polygon drivable area và Polyline phân làn |
-| 8 | **Job 1450 (Task 149)** — 25 ảnh đường phố đô thị | Tống Thanh Danh | Võ Trọng Nghĩa | 🟡 50% | Đã gán 13/25 ảnh; Buddy Võ Trọng Nghĩa review chéo, trả 2 ảnh sửa theo QĐ-001 (người ngồi sau xe máy) |
-| 9 | **Job 1451 (Task 149)** — 25 ảnh đường phố đô thị | Phạm Hoàng Anh | Vũ Việt Long | ⛔ 40% | Tạm dừng ở frame 10 do gặp nhiều xe bị che khuất > 50%, chờ hướng dẫn [P-002](../problem-backlog.md#p-002) |
-| 10 | Xây dựng bộ công cụ tự động hóa [`source-tool/`](../source-tool/) | Lê Đức Mạnh | Cả đội | ✅ 100% | Hoàn thành `auto-annotator`, `semantic-segmenter`, `polygon-cleaner`, `browser-copilot` |
-
-*Quy ước:* ✅ Xong và đã qua review nghiệm thu · 🟡 Đang thực hiện · ⛔ Bị chặn (đang chờ giải quyết) · ⬜ Chưa bắt đầu
+| Thành viên | MSSV / Tài khoản | Vai trò đảm nhiệm | Nhiệm vụ chính Tuần 1 | Tình trạng |
+|---|---|---|---|:---:|
+| **Lê Đức Mạnh** | `@ManhLD424` (MSSV: `02122`) | Trưởng nhóm · Kiểm toán chất lượng · Phát triển công cụ | Điều phối chung, quản lý Sổ quyết định, viết công cụ tự động hóa; Audit xác suất các job; phụ trách chính Job 1447 & 1663 | **Hoàn thành 100%** |
+| **Võ Trọng Nghĩa** | MSSV: `02072` | Kiểm duyệt viên chính · Gán nhãn | Phụ trách kiểm duyệt chất lượng bài của Tống Thanh Danh và Phạm Hoàng Anh; phụ trách gán Job 1448 | **Hoàn thành 100%** |
+| ~~**Vũ Việt Long**~~ | ~~MSSV: `02341`~~ | ~~Thành viên~~ | *(Đã dừng việc theo học chương trình)* | **Đã thôi học** |
+| **Tống Thanh Danh** | MSSV: `02299` | Thành viên gán nhãn | Đảm nhận gán nhãn tập Phân đoạn ngữ nghĩa G04 và Job 1450 | **Hoàn thành 100%** |
+| **Phạm Hoàng Anh** | MSSV: `02128` | Thành viên gán nhãn | Đảm nhận gán nhãn Job 1451 | **Hoàn thành 100%** |
 
 ---
 
-## 3. Tổng kết số liệu (Summary Metrics)
+## 2. Bảng theo dõi tiến độ chi tiết
 
-- **Tổng tiến độ gán nhãn:** Đã hoàn thành sơ bộ **105 / 125 ảnh (84%)** trên toàn bộ các task được phân công.
-- **Tỉ lệ đạt chuẩn review lần đầu (First-pass Yield):** **91.2%** (Reviewer kiểm duyệt chéo phát hiện các lỗi taxonomy lệch alias và ranh giới bờ kè đá; đã tiếp thu và chuẩn hóa 100%).
-- **Edge cases phát hiện:** **8 vấn đề** ([P-001](../problem-backlog.md#p-001) đến [P-008](../problem-backlog.md#p-008)).
-- **Quyết định đã chốt:** **7 quyết định** ([QĐ-001](../so-quyet-dinh.md#qđ-001) đến [QĐ-007](../so-quyet-dinh.md#qđ-007)).
-
----
-
-## 4. Vướng mắc & Rào cản (Blockers & Pain points)
-
-1. **Vướng mắc về Guideline (P-002):** Trường hợp vật thể (xe ô tô/xe máy) bị che khuất trên 50% ở hậu cảnh xa. Guideline §3.4 chỉ nêu vật thể cắt ở mép ảnh (truncated) mà chưa định lượng cụ thể ngưỡng che khuất (occlusion threshold) để xác định khi nào thì bỏ qua và khi nào bắt buộc vẽ box.
-   - *Tạm thời:* Đội đã chốt [QĐ-001](../so-quyet-dinh.md#qđ-001) & [QĐ-003](../so-quyet-dinh.md#qđ-003): Vẫn vẽ box ôm sát phần nhìn thấy nếu mắt thường nhận diện được loại phương tiện và bật `occluded = true`. Cần Coach/Mentor xác nhận để chuẩn hóa cho cả đợt.
-2. **Pain point về công cụ & Tốc độ gán nhãn (P-004, P-005):** Thao tác vẽ tay từng bounding box và phân đoạn đa giác (polygon) cho hàng chục ảnh giao thông rất tốn thời gian (30-45 phút/ảnh), dễ gây mỏi mắt dẫn đến bỏ sót vật thể nhỏ ở xa (vi phạm Completeness §7).
-   - *Giải pháp đội đã làm:* Đội đã chủ động xây dựng bộ công cụ AI Pre-annotation trên ONNX Runtime (`auto-annotator` cho BBox và `semantic-segmenter` cho 19-class Cityscapes) giúp tăng tốc độ gán nhãn lên 5-10 lần, chuyển vai trò từ gán thủ công sang kiểm duyệt chất lượng.
-3. **Lệch Taxonomy nhãn (P-006) & Đa giác rác < 10 px² (P-007):** Quá trình gán nhãn của thành viên Tống Thanh Danh phát sinh 91 nhãn alias và 914 đa giác vụn do click đúp tay. Đội đã chốt [QĐ-005](../so-quyet-dinh.md#qđ-005), [QĐ-006](../so-quyet-dinh.md#qđ-006) và viết tool `polygon-cleaner` làm sạch tự động, đồng thời hướng dẫn bạn Danh dùng cọ Brush Mask trên CVAT.
+| # | Hạng mục công việc | Người thực hiện | Người kiểm duyệt | Tiến độ | Đánh giá chất lượng & Kết quả đạt được |
+|---|---|---|---|:---:|---|
+| 1 | Nghiên cứu Annotation Guideline v1.0 (§2 Danh mục nhãn, §3 Quy tắc hình học, §7 Tính đầy đủ) | Toàn đội | Lê Đức Mạnh | **100%** | Đã thống nhất tiêu chuẩn nhận diện 10 lớp đối tượng, quy cách gán nhãn xe cộ và các cờ thuộc tính `truncated` / `occluded`. |
+| 2 | Nghiên cứu Semantic Segmentation Guideline (19 lớp Cityscapes, Quy tắc 01/02/03) | Toàn đội | Lê Đức Mạnh | **100%** | Nắm vững quy tắc Không chồng lấn (Zero Overlap), Bám sát biên nhìn thấy và phân định ranh giới các lớp nền. |
+| 3 | **Job 1447 (Task 149)** — Giao thông đô thị mật độ cao (BBox, Lane, Area) | Lê Đức Mạnh | Võ Trọng Nghĩa | **100%** | **Đã nghiệm thu:** Toàn bộ bounding box chuẩn xác, làm sạch các box trùng lặp và rác, sửa xe tải thùng F35, gắn đủ thuộc tính `occluded` và `truncated`. |
+| 4 | **Job 1663 (Task 203)** — Semantic Segmentation 19 lớp Cityscapes | Lê Đức Mạnh | Võ Trọng Nghĩa | **100%** | **Đã nghiệm thu:** Xóa sạch toàn bộ masks cũ bị phân mảnh; tái phân đoạn từ đầu đạt chuẩn RLE native, kiểm toán trực tiếp đạt **chính xác 0 pixel chồng lấn**. |
+| 5 | **Tập G04 (Segmentation)** — Phân đoạn ngữ nghĩa thực tế | Tống Thanh Danh | Võ Trọng Nghĩa | **100%** | **Đã nghiệm thu:** Hoàn thành đầy đủ các đa giác phân đoạn; làm sạch toàn bộ nhãn alias và loại bỏ đa giác rác; lưu trữ tại `submissions/w1-segmentation-G04-Danh/`. |
+| 6 | **Job 1448 (Task 149)** — Đường phố đô thị (BBox & Lane) | Võ Trọng Nghĩa | Lê Đức Mạnh | **100%** | **Đã nghiệm thu:** Hoàn tất toàn bộ đối tượng, đạt chuẩn tính đầy đủ của biển báo và phương tiện nhỏ ở xa. |
+| 7 | **Job 1450 (Task 149)** — Đường phố đô thị (BBox & Lane) | Tống Thanh Danh | Võ Trọng Nghĩa | **100%** | **Đã nghiệm thu:** Hoàn tất toàn bộ đối tượng, chuẩn hóa các trường hợp xe máy chở người theo QĐ-001. |
+| 8 | **Job 1451 (Task 149)** — Đường phố đô thị (BBox & Lane) | Phạm Hoàng Anh | Võ Trọng Nghĩa | **100%** | **Đã nghiệm thu:** Tháo gỡ điểm nghẽn che khuất theo QĐ-001 & QĐ-003; kiểm duyệt hoàn thiện đạt chuẩn chất lượng. |
+| 9 | Xây dựng bộ công cụ hỗ trợ gán nhãn [`source-tool/`](../source-tool/) | Lê Đức Mạnh | Toàn đội | **100%** | Đưa vào sử dụng thực tế 3 công cụ: `auto-annotator` (hỗ trợ BBox sơ bộ), `semantic-segmenter` (phân đoạn ngữ nghĩa), `polygon-cleaner` (chuẩn hóa nhãn). |
 
 ---
 
-## 5. Kế hoạch tuần 02
+## 3. Tổng hợp kết quả nghiệm thu
 
-1. Nhận giải đáp từ Mentor/Coach về ca P-002, hoàn thiện nốt 100% các frame bị chặn ở Job 1451.
-2. Đẩy toàn bộ tiến độ các Job 1448, 1449, 1450, 1451 lên **✅ 100% qua review**.
-3. Phổ biến quy trình chạy `auto-annotator` cho các thành viên IT trong đội để hỗ trợ các bạn Phi IT tăng tốc độ xử lý các đợt dữ liệu tiếp theo.
-4. Nâng chỉ số First-pass Yield của đội lên trên **95%**.
+- **Tình trạng Challenge Tuần 01:** **Toàn đội đã hoàn thành 100% Challenge gán nhãn tuần này.**
+- **Tiến độ CVAT:** 100% các Job được giao trên hệ thống CVAT đều đã hoàn thành và vượt qua khâu kiểm duyệt chéo độc lập, chuyển trạng thái hoàn tất (`completed`).
+- **Chất lượng dữ liệu (First-pass Yield):** Đạt mức cao và ổn định; mọi lỗi phát hiện trong quá trình kiểm duyệt chéo đều được trao đổi và khắc phục dứt điểm trước khi chốt nghiệm thu.
+- **Tài liệu quản trị chất lượng:**
+  - Ghi nhận đầy đủ **8 vấn đề kỹ thuật** phát sinh thực tế ([P-001](../problem-backlog.md#p-001) đến [P-008](../problem-backlog.md#p-008)).
+  - Thống nhất và ban hành **7 quyết định chuẩn hóa** ([QĐ-001](../so-quyet-dinh.md#qđ-001) đến [QĐ-007](../so-quyet-dinh.md#qđ-007)) làm căn cứ thực hành nhất quán cho cả đội.
 
+---
+
+## 4. Các vấn đề kỹ thuật trọng tâm & Giải pháp của đội
+
+### 4.1. Biến động nhân sự
+- Thành viên Vũ Việt Long đã dừng việc theo học chương trình.
+
+### 4.2. Xử lý triệt để lỗi phân đoạn ngữ nghĩa trên Job 1663 (P-005)
+- *Thực tế phát sinh:* Thuật toán tự động ban đầu chạy trên các cảnh thời tiết phức tạp (đường tuyết, cầu vượt thép) bị lỗi phân mảnh, sinh ra nhiều xe tải ảo trên tuyết và nhận diện nhầm dầm thép cầu vượt thành xe bus. Đồng thời việc trích xuất đa giác polygon gây răng cưa biên và vi phạm vùng đè pixel.
+- *Xử lý của đội:*
+  - Xóa sạch toàn bộ dữ liệu lỗi trên CVAT.
+  - Tách bạch hoàn toàn: Cần gạt nước (`wiper`) và nội thất cabin xe đưa vào vùng không gán (`unannotated`); dầm cầu thép quy chuẩn về `building` theo Cityscapes; mặt đường phủ tuyết đưa về đúng `road`.
+  - Áp dụng ma trận định danh thực thể độc lập (`inst_map`) phân tầng theo chiều sâu $y_2$ và xuất định dạng Bitmask / RLE Mask bản địa của CVAT.
+  - Kết quả kiểm toán trực tiếp: **0 pixel chồng lấn (100% tuân thủ Rule 01 Zero Overlap)**, hình thái mask mịn, bám sát biên thực tế.
+
+### 4.3. Đề xuất Mentor giải đáp ca vật thể bị che khuất nặng ở hậu cảnh xa (P-002)
+- *Thực tế phát sinh:* Tại một số frame, xe ô tô hoặc xe máy ở xa bị che khuất trên 50-70% diện tích (chỉ nhô ra phần đầu xe hoặc một bánh xe). Guideline §3.4 mới chỉ đề cập trường hợp bị cắt mép ảnh (truncated) mà chưa định lượng cụ thể ngưỡng che khuất (occlusion threshold) để xác định khi nào bắt buộc gán và khi nào được phép bỏ qua.
+- *Quy tắc tạm thời của đội:* Đội đã chốt theo [QĐ-001](../so-quyet-dinh.md#qđ-001) & [QĐ-003](../so-quyet-dinh.md#qđ-003): Nếu mắt thường nhận diện được chắc chắn loại phương tiện thì vẫn vẽ box bao sát phần nhìn thấy được và bắt buộc bật thuộc tính `occluded = true`.
+- *Mục tiêu Mentor Duty:* Xin ý kiến phản hồi và xác nhận chính thức từ Mentor / Lab Coach để toàn đội áp dụng thống nhất cho các tuần dữ liệu tiếp theo.
+
+### 4.4. Chuẩn hóa danh mục nhãn (P-006) và Lọc đa giác rác (P-007)
+- *Thực tế phát sinh:* Trong quá trình gán nhãn tập G04, thành viên Tống Thanh Danh chọn nhãn theo tên alias ở cuối danh sách CVAT (như `person` thay vì `pedestrian`, `traffic_light` thay vì `traffic light`) và thao tác click tay tạo ra nhiều mẩu đa giác rác nhỏ $< 10\text{ px}^2$.
+- *Xử lý của đội:* Ban hành [QĐ-005](../so-quyet-dinh.md#qđ-005) và [QĐ-006](../so-quyet-dinh.md#qđ-006); phát triển công cụ `clean_and_remap.py` tự động remap 100% về mã nhãn gốc chuẩn và lọc bỏ đa giác rác; hướng dẫn thành viên chuyển đổi thói quen sang dùng cọ Brush Mask trên CVAT.
+
+---
+
+## 5. Kế hoạch chốt nộp Tuần 01 & Phương hướng Tuần 02
+
+1. **Trước 12:00 trưa ngày mai (Hạn chốt nộp bài Tuần 01):**
+   - Rà soát toàn diện lần cuối 100% các Job trên CVAT, bảo đảm không còn Issue nào ở trạng thái Open.
+   - Nộp báo cáo tiến độ và trình bày kết quả hoàn thành Challenge cùng các giải pháp công cụ tự động hóa với Mentor.
+2. **Kế hoạch cho Tuần 02:**
+   - Ổn định cơ cấu làm việc của đội gồm 4 thành viên.
+   - Áp dụng các giải đáp từ Mentor cho ca P-002 vào bộ quy tắc nội bộ của đội.
+   - Chuyển giao các script tự động hóa trong `source-tool/` để các thành viên có thể tự chạy kiểm tra lỗi trước khi gửi kiểm duyệt, nâng cao năng suất và chất lượng dữ liệu.

@@ -115,7 +115,7 @@ mỗi người sẽ tự xử lý theo một kiểu — và đó là nguồn l�
 
 - **Loại:** Guideline mơ hồ
 - **Mục guideline:** §2 (Taxonomy nhãn đối tượng và quy ước định danh)
-- **Người phát hiện:** Tống Thanh Danh (02299) & Buddy Võ Trọng Nghĩa (02072) · 17/09/2026
+- **Người phát hiện:** Tống Thanh Danh (02299) & Người kiểm duyệt Võ Trọng Nghĩa (02072) · 17/09/2026
 - **Link CVAT & Minh chứng:**
   - https://cvat.note.transformerlabs.ai/tasks/203/jobs/1663?frame=7 — Frame G04_S008 xuất hiện đồng thời người đi bộ, đèn tín hiệu và biển báo
   - Minh chứng hình ảnh: ![Minh chứng P-006](submissions/w1-segmentation-G04-Danh/docs_images/issue_p006_taxonomy_alias.jpg)
@@ -123,7 +123,7 @@ mỗi người sẽ tự xử lý theo một kiểu — và đó là nguồn l�
   1. Có 21 đối tượng được gán Class 28 (`person`) thay vì Class 0 (`pedestrian`).
   2. Có 36 đối tượng được gán Class 29 (`traffic_light` có gạch dưới) thay vì Class 8 (`traffic light` có dấu cách).
   3. Có 34 đối tượng được gán Class 30 (`traffic_sign` có gạch dưới) thay vì Class 9 (`traffic sign` có dấu cách).
-  - *Nguyên nhân:* Giao diện CVAT khi nạp cấu hình nhãn YOLO xuất hiện đồng thời cả bộ nhãn BDD100K chuẩn và nhãn YOLO alias. Thành viên mới/phi IT cuộn xuống dưới và chọn các nhãn có gạch dưới hoặc nhãn `person`, dẫn đến lệch class ID hoàn toàn khi huấn luyện hoặc tính IoU/mAP.
+  - *Nguyên nhân:* Giao diện CVAT khi nạp cấu hình nhãn YOLO xuất hiện đồng thời cả bộ nhãn BDD100K chuẩn và nhãn YOLO alias. Thành viên mới cuộn xuống dưới và chọn các nhãn có gạch dưới hoặc nhãn `person`, dẫn đến lệch class ID hoàn toàn khi huấn luyện hoặc tính IoU/mAP.
 - **Các cách hiểu:**
   1. Giữ nguyên theo nhãn mà CVAT cho phép chọn -> Gây lỗi không đồng nhất dữ liệu giữa các thành viên trong đội.
   2. Bắt buộc sửa tay từng đối tượng trên CVAT -> Rất mất thời gian (91 đối tượng).
@@ -156,7 +156,7 @@ mỗi người sẽ tự xử lý theo một kiểu — và đó là nguồn l�
 
 - **Loại:** Guideline chưa nói tới
 - **Mục guideline:** Rule 01 (Zero Overlap), Rule 03 (Strict Boundary)
-- **Người phát hiện:** Tống Thanh Danh (02299) & Buddy Võ Trọng Nghĩa (02072) · 17/09/2026
+- **Người phát hiện:** Tống Thanh Danh (02299) & Người kiểm duyệt Võ Trọng Nghĩa (02072) · 17/09/2026
 - **Link CVAT & Minh chứng:**
   - https://cvat.note.transformerlabs.ai/tasks/203/jobs/1663?frame=0 — Frame G04_S001 bờ kè đá giật cấp chân công trình bên phải
   - Minh chứng hình ảnh: ![Minh chứng P-008](submissions/w1-segmentation-G04-Danh/docs_images/issue_p008_wall_vs_building_boundary.jpg)

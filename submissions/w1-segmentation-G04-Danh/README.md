@@ -7,7 +7,7 @@ Kho lưu trữ kết quả gán nhãn thực tế của thành viên **Tống Th
 ## 1. Thông tin tổng quan bộ dữ liệu
 
 - **Người thực hiện (Annotator):** Tống Thanh Danh (MSSV: `2A202602299`)
-- **Người kiểm duyệt chéo (Reviewer / Buddy):** Võ Trọng Nghĩa (MSSV: `2A202602072`)
+- **Người kiểm duyệt chéo (Reviewer):** Võ Trọng Nghĩa (MSSV: `2A202602072`)
 - **Trưởng nhóm & Giám sát chất lượng (Lead & QA Auditor):** Lê Đức Mạnh (MSSV: `2A202602122`)
 - **Tác vụ gán nhãn:** Semantic / Instance Segmentation (Đa giác phân đoạn YOLO)
 - **Tập dữ liệu phân công:** Nhóm **G04** (`w1/segmentation/G04/`)
@@ -55,7 +55,7 @@ Kho lưu trữ kết quả gán nhãn thực tế của thành viên **Tống Th
 | **28** | `person` *(Alias)* | 21 | **Issue P-006**: Đã remap về `pedestrian` (Class 0) |
 | **29** | `traffic_light` *(Alias)* | 36 | **Issue P-006**: Đã remap về `traffic light` (Class 8) |
 | **30** | `traffic_sign` *(Alias)* | 34 | **Issue P-006**: Đã remap về `traffic sign` (Class 9) |
-| **Tổng cộng** | — | **2.916** | Đã nghiệm thu sơ bộ qua Buddy System |
+| **Tổng cộng** | — | **2.916** | Đã nghiệm thu qua quy trình kiểm duyệt chéo |
 
 ---
 
