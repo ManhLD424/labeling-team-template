@@ -19,6 +19,8 @@ mỗi người sẽ tự xử lý theo một kiểu — và đó là nguồn l�
 | [P-006](#p-006) | Lệch taxonomy nhãn CVAT giữa BDD100k và YOLO format (`person`, `traffic_light`, `traffic_sign`) | Guideline mơ hồ | §2, Taxonomy | ✅ Đã chốt | [QĐ-005](so-quyet-dinh.md#qđ-005) & [polygon-cleaner](source-tool/polygon-cleaner/) |
 | [P-007](#p-007) | Phân mảnh đa giác và 914 đa giác rác siêu nhỏ (< 10 px²) khi gán nhãn thủ công | Pain point công cụ | Rule 01, §2 | ✅ Đã chốt | [QĐ-006](so-quyet-dinh.md#qđ-006) & [polygon-cleaner](source-tool/polygon-cleaner/) |
 | [P-008](#p-008) | Tranh chấp ranh giới Tường bờ kè (`wall`) vs Tòa nhà (`building`) vs Vỉa hè (`sidewalk`) | Guideline chưa nói tới | Rule 01, Rule 03 | ✅ Đã chốt | [QĐ-007](so-quyet-dinh.md#qđ-007) |
+| [P-009](#p-009) | Tranh chấp Left/Right khi tay vặn người bắt chéo hoặc ảnh xoay 90° | Guideline mơ hồ | §2.1, §6.6 | ↗️ Hỏi Coach/BTC | Tạm áp dụng [QĐ-008](so-quyet-dinh.md#qđ-008) |
+| [P-010](#p-010) | Chi dưới và khớp cổ chân bị che khuất sau vô-lăng / táp-lô trong cabin xe | Guideline mơ hồ | §3.3, §4.1, §6.4 | ✅ Đã chốt | [QĐ-009](so-quyet-dinh.md#qđ-009) |
 
 **Loại**
 
@@ -169,6 +171,38 @@ mỗi người sẽ tự xử lý theo một kiểu — và đó là nguồn l�
   2. Tách bờ kè đá độc lập ngoài trời thành `wall`, kết cấu kín có tường gạch và mái nhà mới tính là `building`. Đảo giao thông bộ hành gán `sidewalk`.
 - **Xử lý tạm trong lúc chờ:** Áp dụng theo hướng 2 theo thống nhất nội bộ.
 - **Kết quả:** ✅ [QĐ-007](so-quyet-dinh.md#qđ-007).
+
+## P-009
+
+**Tranh chấp Left/Right khi tay vặn người bắt chéo hoặc ảnh xoay 90° (HumanPose-17)**
+
+- **Loại:** Guideline mơ hồ
+- **Mục guideline:** §2.1 (Trái và phải theo khung hình), §6.6 (Người lái vặn mình)
+- **Người phát hiện:** Võ Trọng Nghĩa (02072) & Lê Đức Mạnh (02122) · 22/09/2026
+- **Link CVAT:**
+  - https://cvat.note.transformerlabs.ai/tasks/431/jobs/2563?frame=12 — Cánh tay phải với sang bên trái khung hình
+- **Mô tả:** Guideline §2.1 quy định cứng: "Điểm R nằm ở phía phải của ảnh đang hiển thị; điểm L nằm ở phía trái của ảnh. Không suy luận theo tay/chân giải phẫu của người lái". Tuy nhiên trong tình huống người lái đưa tay phải bắt chéo qua thân sang nửa trái khung hình để chỉnh vô-lăng/gạt cần số, nếu máy móc đổi cổ tay đó thành `L_Wrist` thì cánh tay sẽ bị gãy cấu trúc động học (vai phải nối với cổ tay trái).
+- **Các cách hiểu:**
+  1. Máy móc theo toạ độ x của điểm: Nằm nửa trái ảnh thì bất kể là chi nào cũng gán nhãn `L_*`.
+  2. Bảo toàn chuỗi liên tục giải phẫu học: Cánh tay xuất phát từ vai nào thì toàn bộ khuỷu và cổ tay đó giữ nguyên định danh của bên đó (`R_Shoulder` -> `R_Elbow` -> `R_Wrist`).
+- **Xử lý tạm trong lúc chờ:** Tạm chốt theo hướng 2 theo [QĐ-008](so-quyet-dinh.md#qđ-008) để đảm bảo topology xương liên tục không bị cắt chéo thân.
+- **Kết quả:** ↗️ Đã đưa vào câu hỏi nộp Mentor Duty ngày 24/09/2026 để xin chốt chính thức từ Mentor.
+
+## P-010
+
+**Chi dưới và khớp cổ chân bị che khuất sau vô-lăng / táp-lô trong cabin xe (HumanPose-17)**
+
+- **Loại:** Guideline mơ hồ
+- **Mục guideline:** §3.3 (Chi dưới), §4.1 (Quy tắc quyết định), §6.3 & §6.4 (Chi dưới khuất hoàn toàn)
+- **Người phát hiện:** Võ Trọng Nghĩa (02072) & Tống Thanh Danh (02299) · 23/09/2026
+- **Link CVAT:**
+  - https://cvat.note.transformerlabs.ai/tasks/431/jobs/2563?frame=15 — Chân người lái khuất hoàn toàn sau bảng điều khiển và vô-lăng
+- **Mô tả:** Trong cabin xe, chân người lái thường xuyên bị che khuất sau vô-lăng, bảng điều khiển hoặc ghế lái. Mô hình pre-label thường tự động ném điểm gối và cổ chân lên bề mặt ghế, cần số hoặc bảng táp-lô (lỗi trôi dạt điểm 16 lên đến 118 lần, điểm 17 lên đến 82 lần). Thành viên phân vân khi nào nên ước lượng (`Occluded`) và khi nào nên đánh dấu ngoài khung/không suy đoán được (`Outside`).
+- **Các cách hiểu:**
+  1. Cố gắng ước lượng vị trí gối và cổ chân theo tỉ lệ cơ thể dù không thấy bất kỳ phần nào của chân.
+  2. Tuân thủ nghiêm ngặt bảng §3.3: Nếu chỉ thấy hông mà chân khuất hoàn toàn sau táp-lô hoặc bị mép ảnh cắt thì đánh `Outside`. Chỉ khi thấy đường đùi/cẳng chân qua nếp quần mới được ước lượng và đánh `Occluded`.
+- **Xử lý tạm trong lúc chờ:** Toàn đội thống nhất áp dụng hướng 2 theo [QĐ-009](so-quyet-dinh.md#qđ-009): Không gán bừa lên ghế hay sàn xe; nếu không thấy căn cứ thị giác thì đánh `Outside`.
+- **Kết quả:** ✅ [QĐ-009](so-quyet-dinh.md#qđ-009).
 
 ---
 

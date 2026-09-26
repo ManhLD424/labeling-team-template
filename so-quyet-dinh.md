@@ -20,6 +20,8 @@ cũ được gán theo cách cũ.
 | [QĐ-005](#qđ-005) | Chuẩn hóa Taxonomy và tự động ánh xạ Alias Class (28->0, 29->8, 30->9) | 17/09/2026 | [P-006](problem-backlog.md#p-006) | Hiệu lực |
 | [QĐ-006](#qđ-006) | Lọc bỏ tự động đa giác rác (< 10 px²) và khuyến nghị dùng cọ Brush Mask | 17/09/2026 | [P-007](problem-backlog.md#p-007) | Hiệu lực |
 | [QĐ-007](#qđ-007) | Quy tắc phân định Tường rào (`wall`) vs Tòa nhà (`building`) và ranh giới Bờ kè đá | 17/09/2026 | [P-008](problem-backlog.md#p-008) | Hiệu lực |
+| [QĐ-008](#qđ-008) | Ưu tiên bảo toàn chuỗi động học giải phẫu chi trên khi người lái vặn mình | 22/09/2026 | [P-009](problem-backlog.md#p-009) | Tạm áp dụng |
+| [QĐ-009](#qđ-009) | Quy tắc xử lý chi dưới và khớp cổ chân bị che khuất trong cabin xe | 23/09/2026 | [P-010](problem-backlog.md#p-010) | Hiệu lực |
 
 **Trạng thái:** Hiệu lực · Bị thay bởi QĐ-xxx · Huỷ (ghi lý do)
 
@@ -145,6 +147,40 @@ cũ được gán theo cách cũ.
 - **Việc phải làm theo:**
   - [x] Áp dụng chuẩn này cho 25 ảnh nhóm G04 (Tống Thanh Danh)
   - [x] Lưu trữ ảnh minh chứng `issue_p008_wall_vs_building_boundary.jpg` vào kho tài liệu đội (Võ Trọng Nghĩa)
+- **Trạng thái:** Hiệu lực
+
+## QĐ-008
+
+**Ưu tiên bảo toàn chuỗi động học giải phẫu chi trên khi người lái vặn mình**
+
+- **Ngày:** 22/09/2026
+- **Người tham gia:** Lê Đức Mạnh (chốt), Võ Trọng Nghĩa, Tống Thanh Danh, Phạm Hoàng Anh
+- **Xuất phát từ:** [P-009](problem-backlog.md#p-009)
+- **Bối cảnh:** Khi người lái vặn mình hoặc đưa tay phải bắt chéo sang nửa trái khung hình, nếu máy móc áp dụng quy tắc R/L theo toạ độ màn hình sẽ làm gãy chuỗi động học cánh tay (vai phải nối khuỷu tay trái).
+- **Các phương án đã cân nhắc:**
+  1. *Đổi tên điểm hoàn toàn theo nửa trái/phải màn hình* — làm sai lệch nghiêm trọng topology xương cơ thể, khiến mô hình học ra dáng người bị dị tật. Loại.
+  2. *Quy ước R/L ban đầu dựa trên vị trí khớp gốc (vai/hông), toàn bộ chuỗi chi (khuỷu, cổ tay) kế thừa theo khớp gốc đó* — bảo toàn tính liên tục của xương và tương thích mô hình Pose Estimation. **Chọn.**
+- **Quyết định:** Luôn bảo toàn chuỗi xương liên tục: Cánh tay bắt đầu từ vai nào thì khuỷu tay và cổ tay đó mang nhãn của bên đó, bất kể bàn tay đó có vươn qua đường trung tuyến sang nửa bên kia của khung hình.
+- **Việc phải làm theo:**
+  - [x] Áp dụng cho các job HumanPose-17 (Võ Trọng Nghĩa, Tống Thanh Danh)
+  - [x] Nộp câu hỏi xác nhận chính thức với Mentor trong buổi Mentor Duty ngày 24/09/2026 (Lê Đức Mạnh)
+- **Trạng thái:** Tạm áp dụng
+
+## QĐ-009
+
+**Quy tắc xử lý chi dưới và khớp cổ chân bị che khuất trong cabin xe**
+
+- **Ngày:** 23/09/2026
+- **Người tham gia:** Lê Đức Mạnh (chốt), Võ Trọng Nghĩa, Tống Thanh Danh
+- **Xuất phát từ:** [P-010](problem-backlog.md#p-010)
+- **Bối cảnh:** Trong cabin xe ô tô, chi dưới người lái thường xuyên bị che khuất hoàn toàn sau bảng điều khiển, vô-lăng hoặc thành ghế. Mô hình gợi ý thường sinh lỗi trôi dạt điểm gối và cổ chân lên sàn xe hoặc cần số.
+- **Các phương án đã cân nhắc:**
+  1. *Cố ước lượng vị trí chân theo tỉ lệ giải phẫu dù không nhìn thấy chi* — sai số lên tới hơn 100px và làm loãng hàm loss hồi quy toạ độ của mô hình. Loại.
+  2. *Tuân thủ nghiêm ngặt quy tắc Guideline §3.3 và §4.1: Chỉ gán `Occluded` khi thấy nếp quần định hình đường đùi/cẳng chân; nếu hoàn toàn không có dấu vết thị giác hoặc bị cắt khỏi khung hình thì dứt khoát đánh `Outside`* — chuẩn xác, trung thực, tránh ném điểm bừa bãi. **Chọn.**
+- **Quyết định:** Tuyệt đối không đặt điểm gối/cổ chân lên ghế, cần số hay sàn xe. Chỉ đánh `Occluded` khi nhìn thấy đường đùi/cẳng chân qua quần để ước lượng theo trục chi; nếu chi dưới khuất hẳn sau táp-lô hoặc bị mép ảnh cắt thì đánh `Outside`.
+- **Việc phải làm theo:**
+  - [x] Áp dụng nghiệm thu cho 15 ảnh của Job 2559 & 2563 (Võ Trọng Nghĩa)
+  - [ ] Rà soát 100% khi thực hiện các job còn lại của Task 430 & Task 431 (Lê Đức Mạnh, Tống Thanh Danh, Phạm Hoàng Anh)
 - **Trạng thái:** Hiệu lực
 
 ---
