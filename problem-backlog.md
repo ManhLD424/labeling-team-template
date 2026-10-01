@@ -21,6 +21,10 @@ mỗi người sẽ tự xử lý theo một kiểu — và đó là nguồn l�
 | [P-008](#p-008) | Tranh chấp ranh giới Tường bờ kè (`wall`) vs Tòa nhà (`building`) vs Vỉa hè (`sidewalk`) | Guideline chưa nói tới | Rule 01, Rule 03 | ✅ Đã chốt | [QĐ-007](so-quyet-dinh.md#qđ-007) |
 | [P-009](#p-009) | Tranh chấp Left/Right khi tay vặn người bắt chéo hoặc ảnh xoay 90° | Guideline mơ hồ | §2.1, §6.6 | ↗️ Hỏi Coach/BTC | Tạm áp dụng [QĐ-008](so-quyet-dinh.md#qđ-008) |
 | [P-010](#p-010) | Chi dưới và khớp cổ chân bị che khuất sau vô-lăng / táp-lô trong cabin xe | Guideline mơ hồ | §3.3, §4.1, §6.4 | ✅ Đã chốt | [QĐ-009](so-quyet-dinh.md#qđ-009) |
+| [P-011](#p-011) | Phân định đầu kéo (`truck`) và rơ-moóc (`trailer`) khi cụm xe kéo dính liền point cloud | Guideline mơ hồ | §3, §6 (trailer) | ✅ Đã chốt | [QĐ-010](so-quyet-dinh.md#qđ-010) |
+| [P-012](#p-012) | Người điều khiển xe máy (`motorcycle`) / xe đạp (`bicycle`): có gán chồng nhãn `pedestrian` | Guideline mơ hồ | §3, §6 (motorcycle) | ✅ Đã chốt | [QĐ-011](so-quyet-dinh.md#qđ-011) |
+| [P-013](#p-013) | Hiện tượng Box nổi/chìm (Ground Plane Misalignment) và sai lệch góc xoay Yaw trên 3D | Pain point công cụ | §4.1, §4.3, §7 | ✅ Đã chốt | [QĐ-012](so-quyet-dinh.md#qđ-012) |
+| [P-014](#p-014) | Điểm LiDAR thưa thớt ở cự ly xa (> 30m) và nguy cơ phóng đại box vượt quá bằng chứng | Guideline mơ hồ | §4.2, §4.4 | ✅ Đã chốt | [QĐ-013](so-quyet-dinh.md#qđ-013) |
 
 **Loại**
 
@@ -203,6 +207,70 @@ mỗi người sẽ tự xử lý theo một kiểu — và đó là nguồn l�
   2. Tuân thủ nghiêm ngặt bảng §3.3: Nếu chỉ thấy hông mà chân khuất hoàn toàn sau táp-lô hoặc bị mép ảnh cắt thì đánh `Outside`. Chỉ khi thấy đường đùi/cẳng chân qua nếp quần mới được ước lượng và đánh `Occluded`.
 - **Xử lý tạm trong lúc chờ:** Toàn đội thống nhất áp dụng hướng 2 theo [QĐ-009](so-quyet-dinh.md#qđ-009): Không gán bừa lên ghế hay sàn xe; nếu không thấy căn cứ thị giác thì đánh `Outside`.
 - **Kết quả:** ✅ [QĐ-009](so-quyet-dinh.md#qđ-009).
+
+## P-011
+
+**Phân định đầu kéo (`truck`) và rơ-moóc (`trailer`) khi cụm xe kéo dính liền point cloud (3D Cuboid)**
+
+- **Loại:** Guideline mơ hồ
+- **Mục guideline:** §3 (Class trailer), §6 (trailer) — "Không gộp trailer vào truck nếu nhìn thấy là một cấu phần riêng"
+- **Người phát hiện:** Lê Đức Mạnh (02122) & Võ Trọng Nghĩa (02072) · 28/09/2026
+- **Link CVAT:**
+  - https://cvat.note.transformerlabs.ai/tasks/1497/jobs/4023?frame=0 — Xe tải chở hàng kéo theo rơ-moóc thùng rời
+- **Mô tả:** Trong đám mây điểm LiDAR, chùm điểm phản xạ giữa cabin đầu kéo và phần rơ-moóc phía sau thường nối liền nhau do khoảng cách hẹp, khiến annotator dễ kéo một box bao trọn cả xe dài > 12m. Nếu gộp chung sẽ làm hỏng dữ liệu huấn luyện kích thước chuẩn của phương tiện.
+- **Các cách hiểu:**
+  1. Gộp cả xe đầu kéo và rơ-moóc vào một cuboid nhãn `truck` vì cùng thuộc một tổ hợp vận tải đang di chuyển.
+  2. Tách thành 2 cuboid độc lập: phần cabin/đầu kéo mang nhãn `truck`, phần rơ-moóc phía sau mang nhãn `trailer`. Sử dụng các camera `CAM_BACK` và `CAM_FRONT_LEFT/RIGHT` để xác định chính xác khớp nối xoay.
+- **Xử lý tạm trong lúc chờ:** Toàn đội thống nhất áp dụng hướng 2 theo [QĐ-010](so-quyet-dinh.md#qđ-010).
+- **Kết quả:** ✅ [QĐ-010](so-quyet-dinh.md#qđ-010).
+
+## P-012
+
+**Người điều khiển xe máy / xe đạp: có gán chồng nhãn `pedestrian` hay không (3D Cuboid)**
+
+- **Loại:** Guideline mơ hồ
+- **Mục guideline:** §3 & §6 (motorcycle / bicycle) — "Gán phương tiện, không tạo class rider riêng"
+- **Người phát hiện:** Tống Thanh Danh (02299) · 29/09/2026
+- **Link CVAT:**
+  - https://cvat.note.transformerlabs.ai/tasks/1497/jobs/4023?frame=6 — Xe máy đang lưu thông trên làn đường
+- **Mô tả:** Khi xe máy hoặc xe đạp di chuyển, người điều khiển nhô lên trên yên xe tạo thành một khối điểm 3D cao. Một số annotator phân vân có cần tạo thêm 1 cuboid `pedestrian` bao quanh người lái rồi để chồng lên cuboid của xe hay không.
+- **Các cách hiểu:**
+  1. Tạo 2 box chồng nhau: 1 box `motorcycle` cho xe và 1 box `pedestrian` cho người lái xe.
+  2. Chỉ tạo đúng 1 box `motorcycle` hoặc `bicycle` bao trọn toàn bộ cả phương tiện lẫn người đang ngồi lái.
+- **Xử lý tạm trong lúc chờ:** Toàn đội chốt theo hướng 2 theo [QĐ-011](so-quyet-dinh.md#qđ-011): Không tạo nhãn `pedestrian` chồng đè; chỉ gán `pedestrian` khi người đó đã xuống dắt xe hoặc đi bộ rời khỏi xe.
+- **Kết quả:** ✅ [QĐ-011](so-quyet-dinh.md#qđ-011).
+
+## P-013
+
+**Hiện tượng Box nổi/chìm (Ground Plane Misalignment) và sai lệch góc xoay Yaw trên 3D**
+
+- **Loại:** Pain point công cụ
+- **Mục guideline:** §4.1 (Vị trí và tâm box), §4.3 (Hướng / yaw), §7 (Lỗi thường gặp)
+- **Người phát hiện:** Phạm Hoàng Anh (02128) & Lê Đức Mạnh (02122) · 29/09/2026
+- **Link CVAT:**
+  - https://cvat.note.transformerlabs.ai/tasks/1497/jobs/4023?frame=2 — Xe hơi trên đoạn đường dốc nhẹ bị cắm đáy box xuống lòng đất
+- **Mô tả:** Khi chỉ quan sát trên phối cảnh Top-down (mặt bằng), cuboid nhìn rất khít nhưng khi chuyển sang Side/Front projection thì đáy box bị cắm sâu xuống lòng đường (chìm) hoặc lơ lửng trên không (nổi). Ngoài ra, trục dài của box bị xoay ngược 180° hoặc lệch góc so với hướng di chuyển thật của xe.
+- **Hướng đang cân nhắc:**
+  - Bắt buộc kiểm tra đồng bộ 3 hình chiếu trực giao (Top, Side, Front) trước khi xác nhận box.
+  - Đáy box phải tựa chuẩn lên mặt tiếp xúc bánh xe/mặt đất. Trục dài bám sát thân xe theo hướng tiến.
+- **Xử lý tạm trong lúc chờ:** Ban hành quy chuẩn thao tác 3 hình chiếu theo [QĐ-012](so-quyet-dinh.md#qđ-012).
+- **Kết quả:** ✅ [QĐ-012](so-quyet-dinh.md#qđ-012).
+
+## P-014
+
+**Điểm LiDAR thưa thớt ở cự ly xa (> 30m) và nguy cơ phóng đại box vượt quá bằng chứng**
+
+- **Loại:** Guideline mơ hồ
+- **Mục guideline:** §4.2 (Kích thước), §4.4 (Point cloud thưa), §7 (Box quá lớn)
+- **Người phát hiện:** Võ Trọng Nghĩa (02072) · 30/09/2026
+- **Link CVAT:**
+  - https://cvat.note.transformerlabs.ai/tasks/1497/jobs/4023?frame=7 — Ô tô ở hậu cảnh xa chỉ có 3-4 điểm LiDAR
+- **Mô tả:** Các vật thể ở xa tâm xe tự hành (> 30m) chỉ phản xạ được 2 đến 5 điểm LiDAR thưa thớt. Annotator nhìn trên camera thấy rõ ô tô nên có xu hướng vẽ một cuboid to đúng kích thước xe tiêu chuẩn, nhưng vị trí 3D dễ bị trôi và lấn sang khoảng trống.
+- **Các cách hiểu:**
+  1. Phóng đại box ước lượng theo kích thước chuẩn trên ảnh camera bất kể điểm LiDAR thưa.
+  2. Chỉ tạo cuboid khi có đủ điểm 3D định hình biên cơ bản; dùng camera để xác nhận class và biên chiều rộng; không phóng đại box vượt quá bằng chứng vật lý quan sát được. Nếu không đủ căn cứ 3D thì flag review.
+- **Xử lý tạm trong lúc chờ:** Tuân thủ nguyên tắc LiDAR là nguồn chính theo [QĐ-013](so-quyet-dinh.md#qđ-013).
+- **Kết quả:** ✅ [QĐ-013](so-quyet-dinh.md#qđ-013).
 
 ---
 

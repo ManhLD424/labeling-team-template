@@ -22,6 +22,10 @@ cũ được gán theo cách cũ.
 | [QĐ-007](#qđ-007) | Quy tắc phân định Tường rào (`wall`) vs Tòa nhà (`building`) và ranh giới Bờ kè đá | 17/09/2026 | [P-008](problem-backlog.md#p-008) | Hiệu lực |
 | [QĐ-008](#qđ-008) | Ưu tiên bảo toàn chuỗi động học giải phẫu chi trên khi người lái vặn mình | 22/09/2026 | [P-009](problem-backlog.md#p-009) | Tạm áp dụng |
 | [QĐ-009](#qđ-009) | Quy tắc xử lý chi dưới và khớp cổ chân bị che khuất trong cabin xe | 23/09/2026 | [P-010](problem-backlog.md#p-010) | Hiệu lực |
+| [QĐ-010](#qđ-010) | Tách rời 2 cuboid riêng biệt cho `truck` và `trailer` kết hợp đối chiếu camera | 28/09/2026 | [P-011](problem-backlog.md#p-011) | Hiệu lực |
+| [QĐ-011](#qđ-011) | Quy tắc gán trọn khối cho `motorcycle` và `bicycle` bao gồm cả người lái | 29/09/2026 | [P-012](problem-backlog.md#p-012) | Hiệu lực |
+| [QĐ-012](#qđ-012) | Quy trình bắt buộc kiểm tra 3 hình chiếu (Top/Side/Front) để khoá mặt đất và Yaw | 29/09/2026 | [P-013](problem-backlog.md#p-013) | Hiệu lực |
+| [QĐ-013](#qđ-013) | Nguyên tắc ưu tiên hình học LiDAR làm nguồn chính và đối soát camera context | 30/09/2026 | [P-014](problem-backlog.md#p-014) | Hiệu lực |
 
 **Trạng thái:** Hiệu lực · Bị thay bởi QĐ-xxx · Huỷ (ghi lý do)
 
@@ -181,6 +185,70 @@ cũ được gán theo cách cũ.
 - **Việc phải làm theo:**
   - [x] Áp dụng nghiệm thu cho 15 ảnh của Job 2559 & 2563 (Võ Trọng Nghĩa)
   - [ ] Rà soát 100% khi thực hiện các job còn lại của Task 430 & Task 431 (Lê Đức Mạnh, Tống Thanh Danh, Phạm Hoàng Anh)
+- **Trạng thái:** Hiệu lực
+
+## QĐ-010
+
+**Tách rời 2 cuboid riêng biệt cho `truck` và `trailer` kết hợp đối chiếu camera (3D Cuboid)**
+
+- **Ngày:** 28/09/2026
+- **Người tham gia:** Lê Đức Mạnh (chốt), Võ Trọng Nghĩa, Tống Thanh Danh, Phạm Hoàng Anh
+- **Xuất phát từ:** [P-011](problem-backlog.md#p-011)
+- **Bối cảnh:** Trong đám mây điểm 3D, các xe tải đầu kéo chở rơ-moóc có phần nối liền mạch, dễ gây nhầm lẫn dẫn đến việc annotator kéo gộp một box duy nhất dài hơn 12m.
+- **Các phương án đã cân nhắc:**
+  1. *Gộp chung thành 1 box `truck`* — vi phạm guideline §3 và §6, làm sai lệch phân phối kích thước chuẩn của mô hình 3D Object Detection. Loại.
+  2. *Tách rời 2 box độc lập: box `truck` cho đầu kéo và box `trailer` cho phần kéo sau* — tuân thủ taxonomy, mô tả chính xác từng thực thể vật lý. **Chọn.**
+- **Quyết định:** Luôn tách thành 2 cuboid độc lập khi phát hiện xe đầu kéo có rơ-moóc thùng rời. Sử dụng kết hợp các camera góc rộng (`CAM_BACK`, `CAM_FRONT_LEFT`, `CAM_FRONT_RIGHT`) để xác định chính xác khe hở khớp nối (fifth wheel).
+- **Việc phải làm theo:**
+  - [x] Áp dụng kiểm duyệt chéo trên các Job của Task 1497 (Toàn đội)
+- **Trạng thái:** Hiệu lực
+
+## QĐ-011
+
+**Quy tắc gán trọn khối cho `motorcycle` và `bicycle` bao gồm cả người lái (3D Cuboid)**
+
+- **Ngày:** 29/09/2026
+- **Người tham gia:** Lê Đức Mạnh (chốt), Võ Trọng Nghĩa, Tống Thanh Danh
+- **Xuất phát từ:** [P-012](problem-backlog.md#p-012)
+- **Bối cảnh:** Người điều khiển xe máy/xe đạp tạo thành một khối điểm cao gắn liền với phương tiện. Cần làm rõ quy tắc tránh việc gán thêm nhãn `pedestrian` chồng đè.
+- **Các phương án đã cân nhắc:**
+  1. *Tạo thêm 1 box `pedestrian` bao quanh người lái* — vi phạm nguyên tắc "Gán phương tiện, không tạo class rider riêng", gây duplicate và chồng lấn bounding box 3D vô nghĩa. Loại.
+  2. *Chỉ tạo đúng 1 cuboid `motorcycle` hoặc `bicycle` bao trọn cả phương tiện và người điều khiển* — chuẩn xác theo Guideline §3 và §6. **Chọn.**
+- **Quyết định:** Không bao giờ tạo box `pedestrian` đè lên xe khi người đang ngồi điều khiển xe máy hoặc xe đạp. Box của phương tiện phải có chiều cao $z$ ôm trọn đến đỉnh mũ bảo hiểm/đầu người lái. Chỉ gán `pedestrian` riêng biệt khi người đó đã bước xuống dắt xe hoặc tách rời khỏi phương tiện.
+- **Việc phải làm theo:**
+  - [x] Quán triệt toàn đội khi annotate các phương tiện 2 bánh (Tống Thanh Danh, Phạm Hoàng Anh)
+- **Trạng thái:** Hiệu lực
+
+## QĐ-012
+
+**Quy trình bắt buộc kiểm tra 3 hình chiếu (Top/Side/Front) để khoá mặt đất và Yaw**
+
+- **Ngày:** 29/09/2026
+- **Người tham gia:** Lê Đức Mạnh (chốt), Võ Trọng Nghĩa, Phạm Hoàng Anh
+- **Xuất phát từ:** [P-013](problem-backlog.md#p-013)
+- **Bối cảnh:** Annotator chỉ nhìn góc nhìn 3D chính hoặc Top-down view nên thường bỏ qua độ cao $z$ và góc xoay yaw, dẫn đến lỗi box chìm dưới mặt đường hoặc xoay ngang thân xe.
+- **Các phương án đã cân nhắc:**
+  1. *Chỉ chỉnh nhanh trên phối cảnh 3D perspective* — thao tác nhanh nhưng tỉ lệ lỗi box nổi/chìm lên tới 40%. Loại.
+  2. *Quy trình chuẩn hoá 3 bước trực giao: Khởi tạo trên Top-down -> Căn chỉnh độ cao và tiếp xúc đất trên Side/Front projection -> Khóa Yaw bám trục dài* — bảo đảm tính chính xác tuyệt đối của hình học 3D. **Chọn.**
+- **Quyết định:** Bắt buộc 100% cuboid trước khi chuyển frame phải được kiểm tra qua cửa sổ trực giao Side Projection và Front Projection. Đáy cuboid phải tiếp xúc chính xác với mặt đường tại điểm bánh xe/chân đế; trục dài của box hướng thẳng theo hướng chuyển động của phương tiện.
+- **Việc phải làm theo:**
+  - [x] Áp dụng làm tiêu chí QA Audit số 1 trong biên bản nghiệm thu (Lê Đức Mạnh, Võ Trọng Nghĩa)
+- **Trạng thái:** Hiệu lực
+
+## QĐ-013
+
+**Nguyên tắc ưu tiên hình học LiDAR làm nguồn chính và đối soát camera context**
+
+- **Ngày:** 30/09/2026
+- **Người tham gia:** Lê Đức Mạnh (chốt), Võ Trọng Nghĩa, Tống Thanh Danh, Phạm Hoàng Anh
+- **Xuất phát từ:** [P-014](problem-backlog.md#p-014)
+- **Bối cảnh:** Ở khoảng cách xa (> 30m), đám mây điểm thưa thớt khiến annotator dễ bị ảnh hưởng bởi ảnh 2D camera mà kéo box quá lớn hoặc đặt sai vị trí 3D.
+- **Các phương án đã cân nhắc:**
+  1. *Ước lượng box theo ảnh 2D camera bất kể điểm LiDAR* — sai lệch cự ly chiều sâu (depth) nghiêm trọng vì ảnh 2D thiếu thông tin chiều sâu $z$. Loại.
+  2. *Point cloud là nguồn chính xác định hình học 3D; 6 camera dùng để xác nhận class, hướng và kiểm tra biên* — tuân thủ đúng nguyên tắc cốt lõi Guideline §1 và §4.4. **Chọn.**
+- **Quyết định:** Point Cloud LiDAR là nguồn quyết định vị trí, kích thước và tâm box 3D; 6 camera đóng vai trò bổ trợ nhận dạng chủng loại (class) và hỗ trợ ước lượng. Tuyệt đối không tạo cuboid khi không có cơ sở điểm phản xạ 3D hợp lý trong Point Cloud. Các trường hợp điểm quá thưa không đủ căn cứ phải ghi lại để xin ý kiến Reviewer/Mentor.
+- **Việc phải làm theo:**
+  - [x] Áp dụng cho toàn bộ các frame có vùng điểm thưa trong Task 1497 (Toàn đội)
 - **Trạng thái:** Hiệu lực
 
 ---
