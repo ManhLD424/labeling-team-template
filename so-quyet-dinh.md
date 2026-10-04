@@ -184,7 +184,7 @@ cũ được gán theo cách cũ.
 - **Quyết định:** Tuyệt đối không đặt điểm gối/cổ chân lên ghế, cần số hay sàn xe. Chỉ đánh `Occluded` khi nhìn thấy đường đùi/cẳng chân qua quần để ước lượng theo trục chi; nếu chi dưới khuất hẳn sau táp-lô hoặc bị mép ảnh cắt thì đánh `Outside`.
 - **Việc phải làm theo:**
   - [x] Áp dụng nghiệm thu cho 15 ảnh của Job 2559 & 2563 (Võ Trọng Nghĩa)
-  - [ ] Rà soát 100% khi thực hiện các job còn lại của Task 430 & Task 431 (Lê Đức Mạnh, Tống Thanh Danh, Phạm Hoàng Anh)
+  - [x] Rà soát 100% khi thực hiện các job còn lại của Task 430 & Task 431 (Lê Đức Mạnh, Tống Thanh Danh, Phạm Hoàng Anh)
 - **Trạng thái:** Hiệu lực
 
 ## QĐ-010
